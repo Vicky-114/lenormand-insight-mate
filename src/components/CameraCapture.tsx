@@ -1,22 +1,27 @@
 import { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Camera, X, RotateCcw } from 'lucide-react';
+import { Camera, X, RotateCcw, Sparkles } from 'lucide-react';
 import { Language, getTranslation } from '@/utils/languageDetector';
+import { analyzeCardImage } from '@/utils/cardAnalysis';
+import { LENORMAND_CARDS } from '@/data/cards';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 interface CameraCaptureProps {
   onCapture: (imageData: string) => void;
+  onCardsIdentified: (cardIds: number[]) => void;
   onClose: () => void;
   language: Language;
 }
 
-export const CameraCapture = ({ onCapture, onClose, language }: CameraCaptureProps) => {
+export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language }: CameraCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const errorMessages = {
     'zh-CN': '无法访问摄像头。请确保已授予摄像头权限。',
@@ -40,6 +45,18 @@ export const CameraCapture = ({ onCapture, onClose, language }: CameraCapturePro
     'zh-CN': '确认使用',
     'en': 'Confirm',
     'ko': '확인',
+  };
+
+  const analyzeButtonText = {
+    'zh-CN': 'AI 识别卡牌',
+    'en': 'AI Identify Cards',
+    'ko': 'AI 카드 식별',
+  };
+
+  const analyzingText = {
+    'zh-CN': '识别中...',
+    'en': 'Analyzing...',
+    'ko': '분석 중...',
   };
 
   const instructionText = {
@@ -110,6 +127,49 @@ export const CameraCapture = ({ onCapture, onClose, language }: CameraCapturePro
     }
   };
 
+  const analyzeWithAI = async () => {
+    if (!capturedImage) return;
+    
+    setIsAnalyzing(true);
+    try {
+      const cardIds = await analyzeCardImage(capturedImage);
+      
+      const identifiedCards = cardIds
+        .map(id => LENORMAND_CARDS.find(c => c.id === id))
+        .filter(Boolean);
+      
+      if (identifiedCards.length > 0) {
+        toast.success(
+          language === 'zh-CN' 
+            ? `识别到 ${identifiedCards.length} 张卡牌！` 
+            : language === 'ko' 
+            ? `${identifiedCards.length}장의 카드를 식별했습니다!` 
+            : `Identified ${identifiedCards.length} cards!`
+        );
+        onCardsIdentified(cardIds);
+      } else {
+        toast.error(
+          language === 'zh-CN' 
+            ? '未识别到卡牌，请重新拍摄' 
+            : language === 'ko' 
+            ? '카드를 식별할 수 없습니다. 다시 찍어주세요' 
+            : 'No cards identified, please retake photo'
+        );
+      }
+    } catch (error) {
+      console.error('Analysis error:', error);
+      toast.error(
+        language === 'zh-CN' 
+          ? '识别失败，请重试' 
+          : language === 'ko' 
+          ? '식별 실패, 다시 시도해주세요' 
+          : 'Identification failed, please try again'
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
     <Card className="fixed inset-4 z-50 bg-background/95 backdrop-blur-sm border-2 border-accent shadow-glow flex flex-col">
       <div className="flex justify-between items-center p-4 border-b border-border">
@@ -168,13 +228,24 @@ export const CameraCapture = ({ onCapture, onClose, language }: CameraCapturePro
                     onClick={retake}
                     variant="outline"
                     className="gap-2"
+                    disabled={isAnalyzing}
                   >
                     <RotateCcw className="w-4 h-4" />
                     {retakeButtonText[language]}
                   </Button>
                   <Button
+                    onClick={analyzeWithAI}
+                    className="gap-2 bg-primary hover:bg-primary/90"
+                    disabled={isAnalyzing}
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    {isAnalyzing ? analyzingText[language] : analyzeButtonText[language]}
+                  </Button>
+                  <Button
                     onClick={confirmCapture}
-                    className="gap-2 bg-accent hover:bg-accent/90"
+                    variant="outline"
+                    className="gap-2"
+                    disabled={isAnalyzing}
                   >
                     {confirmButtonText[language]}
                   </Button>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LenormandCard } from '@/data/cards';
+import { LenormandCard, LENORMAND_CARDS } from '@/data/cards';
 import { detectLanguage, Language, getTranslation } from '@/utils/languageDetector';
 import { generateReading, ReadingResult } from '@/utils/interpretationEngine';
 import { CardSelector } from '@/components/CardSelector';
@@ -58,6 +58,16 @@ const Index = () => {
       language === 'ko' ? '사진이 촬영되었습니다! 수동으로 카드를 선택하세요' : 
       'Photo captured! Please select cards manually'
     );
+  };
+  
+  const handleCardsIdentified = (cardIds: number[]) => {
+    const cards = cardIds
+      .map(id => LENORMAND_CARDS.find(c => c.id === id))
+      .filter(Boolean) as LenormandCard[];
+    
+    setSelectedCards(cards);
+    setShowCamera(false);
+    setCapturedImage(null);
   };
   
   const handleGetReading = async () => {
@@ -216,6 +226,7 @@ const Index = () => {
         {showCamera && (
           <CameraCapture
             onCapture={handleCameraCapture}
+            onCardsIdentified={handleCardsIdentified}
             onClose={() => setShowCamera(false)}
             language={language}
           />
