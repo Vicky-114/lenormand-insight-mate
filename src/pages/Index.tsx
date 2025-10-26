@@ -5,10 +5,11 @@ import { generateReading, ReadingResult } from '@/utils/interpretationEngine';
 import { CardSelector } from '@/components/CardSelector';
 import { SpreadLayout } from '@/components/SpreadLayout';
 import { ReadingResultDisplay } from '@/components/ReadingResult';
+import { CameraCapture } from '@/components/CameraCapture';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Sparkles, RotateCcw } from 'lucide-react';
+import { Sparkles, RotateCcw, Camera } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -17,6 +18,8 @@ const Index = () => {
   const [selectedCards, setSelectedCards] = useState<LenormandCard[]>([]);
   const [reading, setReading] = useState<ReadingResult | null>(null);
   const [isReading, setIsReading] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
   const maxCards = 3;
   
@@ -44,6 +47,17 @@ const Index = () => {
   const handleReset = () => {
     setSelectedCards([]);
     setReading(null);
+    setCapturedImage(null);
+  };
+  
+  const handleCameraCapture = (imageData: string) => {
+    setCapturedImage(imageData);
+    setShowCamera(false);
+    toast.success(
+      language === 'zh-CN' ? '照片已拍摄！请手动选择卡牌' : 
+      language === 'ko' ? '사진이 촬영되었습니다! 수동으로 카드를 선택하세요' : 
+      'Photo captured! Please select cards manually'
+    );
   };
   
   const handleGetReading = async () => {
@@ -118,18 +132,55 @@ const Index = () => {
           </div>
         )}
         
+        {/* Captured Image Display */}
+        {capturedImage && (
+          <Card className="max-w-2xl mx-auto p-4 mb-8 bg-gradient-card border-accent/50">
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <p className="text-sm font-medium">
+                  {language === 'zh-CN' ? '已拍摄的照片' : 
+                   language === 'ko' ? '촬영된 사진' : 
+                   'Captured Photo'}
+                </p>
+                <Button variant="ghost" size="sm" onClick={() => setCapturedImage(null)}>
+                  {language === 'zh-CN' ? '删除' : language === 'ko' ? '삭제' : 'Remove'}
+                </Button>
+              </div>
+              <img src={capturedImage} alt="Captured cards" className="w-full rounded-lg" />
+              <p className="text-xs text-muted-foreground text-center">
+                {language === 'zh-CN' ? '请在下方手动选择识别到的卡牌' : 
+                 language === 'ko' ? '아래에서 인식된 카드를 수동으로 선택하세요' : 
+                 'Please manually select the identified cards below'}
+              </p>
+            </div>
+          </Card>
+        )}
+        
         {/* Card Selection */}
         <Card className="max-w-6xl mx-auto p-6 mb-8 bg-gradient-card border-border shadow-card">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-accent">
               {getTranslation(language, 'selectCards')}
             </h2>
-            {selectedCards.length > 0 && (
-              <Button variant="outline" size="sm" onClick={handleReset}>
-                <RotateCcw className="w-4 h-4 mr-2" />
-                {getTranslation(language, 'reset')}
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowCamera(true)}
+                className="gap-2"
+              >
+                <Camera className="w-4 h-4" />
+                {language === 'zh-CN' ? '使用摄像头' : 
+                 language === 'ko' ? '카메라 사용' : 
+                 'Use Camera'}
               </Button>
-            )}
+              {selectedCards.length > 0 && (
+                <Button variant="outline" size="sm" onClick={handleReset}>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  {getTranslation(language, 'reset')}
+                </Button>
+              )}
+            </div>
           </div>
           
           <CardSelector
@@ -159,6 +210,15 @@ const Index = () => {
           <div id="reading-result" className="max-w-4xl mx-auto">
             <ReadingResultDisplay result={reading} language={language} />
           </div>
+        )}
+        
+        {/* Camera Modal */}
+        {showCamera && (
+          <CameraCapture
+            onCapture={handleCameraCapture}
+            onClose={() => setShowCamera(false)}
+            language={language}
+          />
         )}
       </div>
     </div>

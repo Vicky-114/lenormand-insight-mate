@@ -46,6 +46,8 @@ export const getTranslation = (lang: Language, key: string): string => {
       confidence: '置信度',
       manualSelect: '手动选择卡牌',
       cameraCapture: '使用相机识别',
+      camera: '摄像头',
+      retry: '重试',
     },
     'en': {
       appTitle: 'Lenormand Reading Assistant',
@@ -76,6 +78,8 @@ export const getTranslation = (lang: Language, key: string): string => {
       confidence: 'Confidence',
       manualSelect: 'Manual Card Selection',
       cameraCapture: 'Use Camera Recognition',
+      camera: 'Camera',
+      retry: 'Retry',
     },
     'ko': {
       appTitle: '르노망 카드 리딩 도우미',
@@ -106,6 +110,8 @@ export const getTranslation = (lang: Language, key: string): string => {
       confidence: '신뢰도',
       manualSelect: '수동 카드 선택',
       cameraCapture: '카메라 인식 사용',
+      camera: '카메라',
+      retry: '다시 시도',
     },
   };
   
