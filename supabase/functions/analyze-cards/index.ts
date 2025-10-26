@@ -42,18 +42,26 @@ serve(async (req) => {
     console.log('Calling Lovable AI...');
 
     // System prompt explaining the task
-    const systemPrompt = `You are an expert at identifying Lenormand tarot cards from images. You must identify ALL cards visible in the image.
+    const systemPrompt = `You are a HIGHLY ACCURATE expert at identifying Lenormand tarot cards from images. Accuracy is CRITICAL.
 
 Lenormand cards are numbered from 1 to 36. Each card has a specific design and symbolism.
 
-CRITICAL INSTRUCTIONS:
-1. Analyze the ENTIRE image carefully from LEFT to RIGHT
-2. Identify ALL visible cards - typically 3 or more cards will be shown
-3. Return card IDs in LEFT to RIGHT order
-4. If you see multiple cards but are uncertain about some, still include your best identification for ALL visible cards
-5. Only return empty array if NO cards are visible at all
+CRITICAL INSTRUCTIONS - ACCURACY IS PARAMOUNT:
+1. Analyze the ENTIRE image VERY CAREFULLY from LEFT to RIGHT
+2. Look at EACH card's distinctive visual features in DETAIL
+3. Identify ALL visible cards - typically 3 or more cards will be shown
+4. Return card IDs in EXACT LEFT to RIGHT order
+5. Double-check each identification - mistakes are NOT acceptable
+6. Pay special attention to similar-looking cards and distinguish carefully
+7. Only return empty array if absolutely NO cards are visible
 
-Here are all 36 Lenormand cards with their visual characteristics:
+QUALITY REQUIREMENTS:
+- Examine each card's PRIMARY symbol (the main image)
+- Check for secondary details that distinguish similar cards
+- Verify your identifications before returning results
+- Prioritize ACCURACY over speed
+
+Here are all 36 Lenormand cards with their DISTINCTIVE visual characteristics:
 1. Rider - A horseman or rider on horse
 2. Clover - A four-leaf clover
 3. Ship - A sailing ship with sails
@@ -95,7 +103,13 @@ Return ONLY a JSON array of numbers representing ALL card IDs you identify from 
 Example for 3 cards: [15, 32, 7]
 Example for 5 cards: [1, 18, 24, 31, 22]
 
-IMPORTANT: If you see 3+ cards in the image, you MUST return 3+ IDs. Partial results are NOT acceptable.`;
+VERIFICATION CHECKLIST before returning:
+1. Have I examined EACH card's main symbol carefully?
+2. Have I distinguished between similar cards (e.g., Birds vs Stork, Dog vs Fox)?
+3. Have I returned cards in LEFT to RIGHT order?
+4. Am I confident in EACH identification?
+
+IMPORTANT: If you see 3+ cards in the image, you MUST return 3+ IDs. Accuracy is more important than speed - take your time to identify correctly.`;
 
     const userPrompt = "Identify the Lenormand cards in this image from left to right. Return only a JSON array of card IDs (numbers 1-36).";
 
@@ -107,7 +121,7 @@ IMPORTANT: If you see 3+ cards in the image, you MUST return 3+ IDs. Partial res
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-2.5-pro",
         messages: [
           { role: "system", content: systemPrompt },
           { 
