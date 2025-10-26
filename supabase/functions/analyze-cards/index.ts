@@ -42,15 +42,60 @@ serve(async (req) => {
     console.log('Calling Lovable AI...');
 
     // System prompt explaining the task
-    const systemPrompt = `You are an expert at identifying Lenormand cards from images.
-Lenormand cards are numbered 1-36 with specific names:
-1-Rider, 2-Clover, 3-Ship, 4-House, 5-Tree, 6-Clouds, 7-Snake, 8-Coffin, 9-Bouquet, 10-Scythe, 
-11-Whip, 12-Birds, 13-Child, 14-Fox, 15-Bear, 16-Stars, 17-Stork, 18-Dog, 19-Tower, 20-Garden, 
-21-Mountain, 22-Crossroads, 23-Mice, 24-Heart, 25-Ring, 26-Book, 27-Letter, 28-Man, 29-Woman, 
-30-Lily, 31-Sun, 32-Moon, 33-Key, 34-Fish, 35-Anchor, 36-Cross.
+    const systemPrompt = `You are an expert at identifying Lenormand tarot cards from images. You must identify ALL cards visible in the image.
 
-Analyze the image and identify the Lenormand cards shown. Return ONLY the card IDs from left to right in a JSON array.
-If you see 3 cards, return exactly 3 numbers. If uncertain, make your best educated guess based on visible symbols.`;
+Lenormand cards are numbered from 1 to 36. Each card has a specific design and symbolism.
+
+CRITICAL INSTRUCTIONS:
+1. Analyze the ENTIRE image carefully from LEFT to RIGHT
+2. Identify ALL visible cards - typically 3 or more cards will be shown
+3. Return card IDs in LEFT to RIGHT order
+4. If you see multiple cards but are uncertain about some, still include your best identification for ALL visible cards
+5. Only return empty array if NO cards are visible at all
+
+Here are all 36 Lenormand cards with their visual characteristics:
+1. Rider - A horseman or rider on horse
+2. Clover - A four-leaf clover
+3. Ship - A sailing ship with sails
+4. House - A house or building
+5. Tree - A large tree with branches
+6. Clouds - Dark and light clouds
+7. Snake - A serpent or snake
+8. Coffin - A coffin or casket
+9. Bouquet - A bouquet of flowers
+10. Scythe - A scythe or sickle tool
+11. Whip (Birch Rod) - A whip or birch branches/rods
+12. Birds - Two birds (often facing each other)
+13. Child - A young child
+14. Fox - A fox animal
+15. Bear - A bear animal
+16. Stars - Stars in the sky
+17. Stork - A stork bird
+18. Dog - A dog animal
+19. Tower - A tall tower building
+20. Garden - A garden scene with people
+21. Mountain - A mountain or mountains
+22. Crossroads - A path splitting in two directions
+23. Mice - Multiple mice
+24. Heart - A red heart shape
+25. Ring - A ring (often wedding ring)
+26. Book - A closed or open book
+27. Letter - A letter, envelope or document
+28. Man - A man figure/person
+29. Woman - A woman figure/person
+30. Lily - Lily flowers
+31. Sun - A bright sun
+32. Moon - A crescent moon
+33. Key - A key
+34. Fish - Fish (one or multiple)
+35. Anchor - An anchor
+36. Cross - A cross symbol
+
+Return ONLY a JSON array of numbers representing ALL card IDs you identify from left to right.
+Example for 3 cards: [15, 32, 7]
+Example for 5 cards: [1, 18, 24, 31, 22]
+
+IMPORTANT: If you see 3+ cards in the image, you MUST return 3+ IDs. Partial results are NOT acceptable.`;
 
     const userPrompt = "Identify the Lenormand cards in this image from left to right. Return only a JSON array of card IDs (numbers 1-36).";
 
