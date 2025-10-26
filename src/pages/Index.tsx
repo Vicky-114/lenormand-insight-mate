@@ -83,17 +83,31 @@ const Index = () => {
     
     setIsReading(true);
     
-    // Simulate reading delay for effect
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const result = generateReading(selectedCards, question, language);
-    setReading(result);
-    setIsReading(false);
-    
-    // Scroll to results
-    setTimeout(() => {
-      document.getElementById('reading-result')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    try {
+      // Generate deep AI-powered reading
+      const result = await generateReading(selectedCards, question, language, true);
+      setReading(result);
+      
+      toast.success(
+        language === 'zh-CN' ? 'AI深度解读完成' : 
+        language === 'ko' ? 'AI 심층 분석 완료' : 
+        'AI deep reading complete'
+      );
+      
+      // Scroll to results
+      setTimeout(() => {
+        document.getElementById('reading-result')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } catch (error) {
+      console.error('Reading error:', error);
+      toast.error(
+        language === 'zh-CN' ? '解读失败，请重试' : 
+        language === 'ko' ? '분석 실패, 다시 시도하세요' : 
+        'Reading failed, please try again'
+      );
+    } finally {
+      setIsReading(false);
+    }
   };
   
   return (

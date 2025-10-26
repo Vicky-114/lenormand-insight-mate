@@ -1,5 +1,6 @@
 import { LENORMAND_CARDS, LenormandCard } from '@/data/cards';
 import { Language } from './languageDetector';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CardPosition {
   card: LenormandCard;
@@ -146,11 +147,12 @@ const generateAdvice = (positions: CardPosition[], question: string, lang: Langu
   return advice;
 };
 
-export const generateReading = (
+export const generateReading = async (
   selectedCards: LenormandCard[],
   question: string,
-  lang: Language
-): ReadingResult => {
+  lang: Language,
+  useAI: boolean = true
+): Promise<ReadingResult> => {
   const positions: CardPosition[] = selectedCards.map((card, index) => ({
     card,
     position: index === 0 ? 'past' : index === 1 ? 'present' : 'future',
@@ -163,7 +165,8 @@ export const generateReading = (
   
   const themes = Array.from(new Set(selectedCards.flatMap(c => c.themes)));
   
-  return {
+  // Base reading structure
+  const baseReading = {
     language: lang,
     question,
     spread: '3-card',
@@ -185,4 +188,51 @@ export const generateReading = (
       advice_sections: generateAdvice(positions, question, lang),
     },
   };
+
+  // If AI is enabled, enhance with deep interpretation
+  if (useAI) {
+    try {
+      const cardsData = selectedCards.map(card => ({
+        id: card.id,
+        name: card.name,
+        nameZh: card.nameZh,
+        nameKo: card.nameKo,
+        keywords: getKeywords(card, lang),
+        themes: card.themes,
+      }));
+
+      const { data, error } = await supabase.functions.invoke('interpret-reading', {
+        body: { 
+          cards: cardsData,
+          question,
+          language: lang
+        }
+      });
+
+      if (error) {
+        console.error('AI interpretation error:', error);
+        // Fall back to basic reading
+        return baseReading;
+      }
+
+      if (data?.interpretation) {
+        // Enhance the reading with AI-generated content
+        return {
+          ...baseReading,
+          confidence: 0.95,
+          ui_text: {
+            overview: data.interpretation.overview || baseReading.ui_text.overview,
+            card_analysis: data.interpretation.card_analysis || baseReading.ui_text.card_analysis,
+            combinations: data.interpretation.combinations || baseReading.ui_text.combinations,
+            advice_sections: data.interpretation.advice || baseReading.ui_text.advice_sections,
+          },
+        };
+      }
+    } catch (error) {
+      console.error('Failed to get AI interpretation:', error);
+      // Fall back to basic reading
+    }
+  }
+  
+  return baseReading;
 };

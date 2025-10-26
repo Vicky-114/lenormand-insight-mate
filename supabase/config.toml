@@ -1,1 +1,7 @@
 project_id = "nfmvtfnffmgyalktdwte"
+
+[functions.analyze-cards]
+verify_jwt = false
+
+[functions.interpret-reading]
+verify_jwt = false
