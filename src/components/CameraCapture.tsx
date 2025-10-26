@@ -25,8 +25,6 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isAutoDetecting, setIsAutoDetecting] = useState(false);
   const [detectedCards, setDetectedCards] = useState<number[]>([]);
-  const [lastDetectedCards, setLastDetectedCards] = useState<number[]>([]);
-  const [detectionAttempts, setDetectionAttempts] = useState(0);
 
   const errorMessages = {
     'zh-CN': '无法访问摄像头。请确保已授予摄像头权限。',
@@ -228,13 +226,11 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
   const startAutoDetect = () => {
     setIsAutoDetecting(true);
     setDetectedCards([]);
-    setLastDetectedCards([]);
-    setDetectionAttempts(0);
     
     toast.info(
-      language === 'zh-CN' ? '实时识别已启动，保持卡牌稳定在镜头中...' : 
-      language === 'ko' ? '실시간 인식이 시작되었습니다. 카메라에 카드를 고정하세요' : 
-      'Auto-detection started, keep cards steady in frame...'
+      language === 'zh-CN' ? '实时识别已启动...' : 
+      language === 'ko' ? '실시간 인식이 시작되었습니다...' : 
+      'Auto-detection started...'
     );
 
     const detectCards = async () => {
@@ -242,29 +238,16 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
       if (!imageData) return;
 
       try {
-        setDetectionAttempts(prev => prev + 1);
         const cardIds = await analyzeCardImage(imageData);
         
-        if (cardIds && cardIds.length >= 3) {
-          // Check if same as last detection for stability
-          const isSameAsLast = lastDetectedCards.length === cardIds.length && 
-            cardIds.every((id, index) => id === lastDetectedCards[index]);
-          
-          if (isSameAsLast) {
-            setDetectedCards(cardIds);
-            console.log('Stable detection confirmed:', cardIds);
-            toast.success(
-              language === 'zh-CN' ? `稳定识别到 ${cardIds.length} 张卡牌！` : 
-              language === 'ko' ? `${cardIds.length}장의 카드를 안정적으로 감지했습니다!` : 
-              `Stable detection: ${cardIds.length} cards!`
-            );
-          } else {
-            setLastDetectedCards(cardIds);
-            console.log('Initial detection, waiting for confirmation:', cardIds);
-          }
-        } else if (cardIds && cardIds.length > 0) {
-          console.log(`Partial detection: ${cardIds.length} cards, waiting for more...`);
-          setLastDetectedCards(cardIds);
+        if (cardIds && cardIds.length > 0) {
+          setDetectedCards(cardIds);
+          console.log('Detected cards:', cardIds);
+          toast.success(
+            language === 'zh-CN' ? `✓ 识别到 ${cardIds.length} 张卡牌！` : 
+            language === 'ko' ? `✓ ${cardIds.length}장의 카드 감지!` : 
+            `✓ Detected ${cardIds.length} cards!`
+          );
         }
       } catch (error) {
         console.error('Auto-detection error:', error);
@@ -276,8 +259,6 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
 
   const stopAutoDetect = () => {
     setIsAutoDetecting(false);
-    setDetectionAttempts(0);
-    setLastDetectedCards([]);
     if (autoDetectIntervalRef.current) {
       clearInterval(autoDetectIntervalRef.current);
       autoDetectIntervalRef.current = null;
@@ -360,18 +341,11 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
                           </p>
                         </>
                       ) : (
-                        <>
-                          <p className="text-sm font-semibold mb-2 animate-pulse">
-                            {language === 'zh-CN' ? '正在扫描...' : 
-                             language === 'ko' ? '스캔 중...' : 
-                             'Scanning...'}
-                          </p>
-                          <p className="text-xs opacity-75">
-                            {language === 'zh-CN' ? `尝试 ${detectionAttempts} 次 - 请保持卡牌清晰稳定` : 
-                             language === 'ko' ? `시도 ${detectionAttempts}회 - 카드를 선명하고 안정적으로 유지하세요` : 
-                             `Attempt ${detectionAttempts} - Keep cards clear and steady`}
-                          </p>
-                        </>
+                        <p className="text-sm font-semibold animate-pulse">
+                          {language === 'zh-CN' ? '正在扫描...' : 
+                           language === 'ko' ? '스캔 중...' : 
+                           'Scanning...'}
+                        </p>
                       )}
                     </div>
                   )}
