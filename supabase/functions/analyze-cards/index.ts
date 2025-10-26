@@ -11,22 +11,38 @@ serve(async (req) => {
   }
 
   try {
-    const { image } = await req.json();
+    const body = await req.json();
+    const { image } = body;
+    
+    console.log('Request received, image length:', image ? image.length : 0);
     
     if (!image) {
+      console.error('No image in request');
       return new Response(
         JSON.stringify({ error: "No image provided" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    // Check image size
+    if (image.length > 5000000) { // ~5MB limit
+      console.error('Image too large:', image.length);
+      return new Response(
+        JSON.stringify({ error: "Image too large. Please use a smaller image." }),
+        { status: 413, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
+      console.error('LOVABLE_API_KEY not configured');
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
+    console.log('Calling Lovable AI...');
+
     // System prompt explaining the task
-    const systemPrompt = `You are an expert at identifying Lenormand cards from images. 
+    const systemPrompt = `You are an expert at identifying Lenormand cards from images.
 Lenormand cards are numbered 1-36 with specific names:
 1-Rider, 2-Clover, 3-Ship, 4-House, 5-Tree, 6-Clouds, 7-Snake, 8-Coffin, 9-Bouquet, 10-Scythe, 
 11-Whip, 12-Birds, 13-Child, 14-Fox, 15-Bear, 16-Stars, 17-Stork, 18-Dog, 19-Tower, 20-Garden, 
@@ -64,6 +80,9 @@ If you see 3 cards, return exactly 3 numbers. If uncertain, make your best educa
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("AI gateway error:", response.status, errorText);
+      
       if (response.status === 429) {
         return new Response(
           JSON.stringify({ error: "Rate limit exceeded. Please try again later." }),
@@ -76,9 +95,7 @@ If you see 3 cards, return exactly 3 numbers. If uncertain, make your best educa
           { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error("AI gateway error");
+      throw new Error(`AI gateway error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();

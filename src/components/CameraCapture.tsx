@@ -106,10 +106,27 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
       const context = canvas.getContext('2d');
 
       if (context) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        context.drawImage(video, 0, 0);
-        const imageData = canvas.toDataURL('image/jpeg', 0.9);
+        // Limit max dimensions to reduce file size
+        const maxWidth = 1280;
+        const maxHeight = 960;
+        let width = video.videoWidth;
+        let height = video.videoHeight;
+
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(video, 0, 0, width, height);
+        
+        // Use lower quality to reduce size
+        const imageData = canvas.toDataURL('image/jpeg', 0.7);
         setCapturedImage(imageData);
         stopCamera();
       }
