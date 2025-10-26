@@ -18,10 +18,13 @@ interface CameraCaptureProps {
 export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language }: CameraCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const autoDetectIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAutoDetecting, setIsAutoDetecting] = useState(false);
+  const [detectedCards, setDetectedCards] = useState<number[]>([]);
 
   const errorMessages = {
     'zh-CN': '无法访问摄像头。请确保已授予摄像头权限。',
@@ -69,6 +72,9 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
     startCamera();
     return () => {
       stopCamera();
+      if (autoDetectIntervalRef.current) {
+        clearInterval(autoDetectIntervalRef.current);
+      }
     };
   }, []);
 
@@ -144,6 +150,36 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
     }
   };
 
+  const captureFrameForAnalysis = (): string | null => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    
+    if (!video || !canvas) return null;
+    
+    const context = canvas.getContext('2d');
+    if (!context) return null;
+
+    const maxWidth = 1280;
+    const maxHeight = 960;
+    let width = video.videoWidth;
+    let height = video.videoHeight;
+
+    if (width > maxWidth) {
+      height = (height * maxWidth) / width;
+      width = maxWidth;
+    }
+    if (height > maxHeight) {
+      width = (width * maxHeight) / height;
+      height = maxHeight;
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(video, 0, 0, width, height);
+    
+    return canvas.toDataURL('image/jpeg', 0.7);
+  };
+
   const analyzeWithAI = async () => {
     if (!capturedImage) return;
     
@@ -187,6 +223,54 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
     }
   };
 
+  const startAutoDetect = () => {
+    setIsAutoDetecting(true);
+    setDetectedCards([]);
+    
+    toast.info(
+      language === 'zh-CN' ? '实时识别已启动，请将卡牌对准摄像头' : 
+      language === 'ko' ? '실시간 인식이 시작되었습니다. 카메라에 카드를 맞추세요' : 
+      'Auto-detection started, point cards at camera'
+    );
+
+    const detectCards = async () => {
+      const imageData = captureFrameForAnalysis();
+      if (!imageData) return;
+
+      try {
+        const cardIds = await analyzeCardImage(imageData);
+        if (cardIds && cardIds.length > 0) {
+          setDetectedCards(cardIds);
+          console.log('Auto-detected cards:', cardIds);
+        }
+      } catch (error) {
+        console.error('Auto-detection error:', error);
+      }
+    };
+
+    autoDetectIntervalRef.current = setInterval(detectCards, 3000);
+  };
+
+  const stopAutoDetect = () => {
+    setIsAutoDetecting(false);
+    if (autoDetectIntervalRef.current) {
+      clearInterval(autoDetectIntervalRef.current);
+      autoDetectIntervalRef.current = null;
+    }
+  };
+
+  const confirmAutoDetected = () => {
+    if (detectedCards.length > 0) {
+      onCardsIdentified(detectedCards);
+      stopAutoDetect();
+      toast.success(
+        language === 'zh-CN' ? `已选择 ${detectedCards.length} 张卡牌` : 
+        language === 'ko' ? `${detectedCards.length}장의 카드를 선택했습니다` : 
+        `Selected ${detectedCards.length} cards`
+      );
+    }
+  };
+
   return (
     <Card className="fixed inset-4 z-50 bg-background/95 backdrop-blur-sm border-2 border-accent shadow-glow flex flex-col">
       <div className="flex justify-between items-center p-4 border-b border-border">
@@ -226,13 +310,30 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
                   className="w-full h-full object-contain"
                 />
               ) : (
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-full object-cover"
+                  />
+                  {isAutoDetecting && detectedCards.length > 0 && (
+                    <div className="absolute top-4 left-4 right-4 bg-black/80 text-white p-4 rounded-lg backdrop-blur-sm">
+                      <p className="text-sm font-semibold mb-2">
+                        {language === 'zh-CN' ? `检测到 ${detectedCards.length} 张卡牌` : 
+                         language === 'ko' ? `${detectedCards.length}장의 카드 감지됨` : 
+                         `Detected ${detectedCards.length} cards`}
+                      </p>
+                      <p className="text-xs opacity-90">
+                        {detectedCards.map(id => {
+                          const card = LENORMAND_CARDS.find(c => c.id === id);
+                          return card ? (language === 'zh-CN' ? card.nameZh : language === 'ko' ? card.nameKo : card.name) : id;
+                        }).join(' • ')}
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -267,16 +368,49 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
                     {confirmButtonText[language]}
                   </Button>
                 </>
+              ) : isAutoDetecting ? (
+                <>
+                  <Button
+                    onClick={stopAutoDetect}
+                    variant="outline"
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <X className="w-5 h-5" />
+                    {language === 'zh-CN' ? '停止识别' : language === 'ko' ? '중지' : 'Stop'}
+                  </Button>
+                  <Button
+                    onClick={confirmAutoDetected}
+                    size="lg"
+                    className="gap-2 bg-primary hover:bg-primary/90"
+                    disabled={detectedCards.length === 0}
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    {language === 'zh-CN' ? '确认选择' : language === 'ko' ? '선택 확인' : 'Confirm Selection'}
+                  </Button>
+                </>
               ) : (
-                <Button
-                  onClick={capturePhoto}
-                  size="lg"
-                  className="gap-2 bg-accent hover:bg-accent/90"
-                  disabled={!stream}
-                >
-                  <Camera className="w-5 h-5" />
-                  {captureButtonText[language]}
-                </Button>
+                <>
+                  <Button
+                    onClick={capturePhoto}
+                    size="lg"
+                    variant="outline"
+                    className="gap-2"
+                    disabled={!stream}
+                  >
+                    <Camera className="w-5 h-5" />
+                    {captureButtonText[language]}
+                  </Button>
+                  <Button
+                    onClick={startAutoDetect}
+                    size="lg"
+                    className="gap-2 bg-accent hover:bg-accent/90"
+                    disabled={!stream}
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    {language === 'zh-CN' ? '实时识别' : language === 'ko' ? '실시간 인식' : 'Auto Detect'}
+                  </Button>
+                </>
               )}
             </div>
           </>
