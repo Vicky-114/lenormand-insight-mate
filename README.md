@@ -1,40 +1,70 @@
-# Welcome to your Lovable project
+# Lenormand Reading Assistant | 雷诺曼读牌助手
 
-## Project info
+AI-powered Lenormand card reading with camera recognition and multi-language support (Chinese, English, Korean).
+
+## 🚀 Quick Start - Run Locally
+
+### Prerequisites
+- Node.js 18+ ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- npm or bun
+
+### Installation & Running
+
+```sh
+# 1. Clone the repository
+git clone <YOUR_GIT_URL>
+cd <YOUR_PROJECT_NAME>
+
+# 2. Install dependencies
+npm install
+# or if you have bun installed:
+bun install
+
+# 3. Start the development server
+npm run dev
+# or with bun:
+bun dev
+
+# 4. Open your browser
+# The app will automatically open at http://localhost:8080
+```
+
+That's it! The app should now be running locally. 🎉
+
+### Troubleshooting
+
+**Port already in use?**
+```sh
+# Kill the process using port 8080
+# On Mac/Linux:
+lsof -ti:8080 | xargs kill -9
+# On Windows:
+netstat -ano | findstr :8080
+taskkill /PID <PID> /F
+```
+
+**Dependencies not installing?**
+```sh
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Environment issues?**
+- Make sure you're using Node.js 18 or higher: `node --version`
+- The `.env` file is auto-generated, don't edit it manually
+
+## 📝 Project Info
 
 **URL**: https://lovable.dev/projects/645caa32-be26-405a-be8a-ac3873c7a75d
 
-## How can I edit this code?
+## ✏️ How to Edit
 
-There are several ways of editing your application.
+### Use Lovable (Recommended)
+Visit [Lovable Project](https://lovable.dev/projects/645caa32-be26-405a-be8a-ac3873c7a75d) and start prompting. Changes are automatically committed.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/645caa32-be26-405a-be8a-ac3873c7a75d) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Use Your IDE
+Clone the repo, make changes, and push. Changes sync with Lovable automatically.
 
 **Edit a file directly in GitHub**
 
