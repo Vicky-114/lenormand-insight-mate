@@ -112,9 +112,8 @@ const Index = () => {
   };
   
   return (
-    <>
+    <div className="relative min-h-screen bg-gradient-mystic">
       <StarryBackground />
-      <div className="min-h-screen bg-gradient-mystic">
       <div className="container mx-auto px-4 py-8 md:py-12">
         {/* Header */}
         <div className="text-center mb-12 space-y-4">
@@ -238,19 +237,8 @@ const Index = () => {
             <ReadingResultDisplay result={reading} language={language} />
           </div>
         )}
-        
-        {/* Camera Modal */}
-        {showCamera && (
-          <CameraCapture
-            onCapture={handleCameraCapture}
-            onCardsIdentified={handleCardsIdentified}
-            onClose={() => setShowCamera(false)}
-            language={language}
-          />
-        )}
       </div>
     </div>
-    </>
   );
 };
 
