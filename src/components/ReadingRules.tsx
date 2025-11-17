@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
 import { getTranslation, type Language } from '@/utils/languageDetector';
@@ -31,18 +30,16 @@ export const ReadingRules = ({ language }: ReadingRulesProps) => {
         </CollapsibleTrigger>
         
         <CollapsibleContent className="mt-4">
-          <ScrollArea className="h-[400px] pr-4">
-            <ol className="space-y-3 text-sm text-muted-foreground">
-              {rules.map((ruleKey, index) => (
-                <li key={ruleKey} className="flex gap-2">
-                  <span className="font-semibold text-primary shrink-0">{index + 1}.</span>
-                  <span className={index === 6 ? 'font-medium text-foreground' : ''}>
-                    {getTranslation(language, ruleKey)}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </ScrollArea>
+          <ol className="space-y-3 text-sm text-muted-foreground">
+            {rules.map((ruleKey, index) => (
+              <li key={ruleKey} className="flex gap-2">
+                <span className="font-semibold text-primary shrink-0">{index + 1}.</span>
+                <span className={index === 6 ? 'font-medium text-foreground' : ''}>
+                  {getTranslation(language, ruleKey)}
+                </span>
+              </li>
+            ))}
+          </ol>
         </CollapsibleContent>
       </Collapsible>
     </Card>
