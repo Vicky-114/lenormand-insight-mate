@@ -59,7 +59,7 @@ All colors MUST be HSL.
     overflow-x: hidden;
   }
 
-  /* Starry night sky background - first layer with dense white stars */
+  /* Starry night sky background - first layer with visible white stars */
   body::before {
     content: '';
     position: fixed;
@@ -69,28 +69,28 @@ All colors MUST be HSL.
     height: 100%;
     z-index: -1;
     background: 
-      radial-gradient(1px 1px at 5% 10%, white, transparent),
-      radial-gradient(1px 1px at 15% 25%, white, transparent),
-      radial-gradient(1px 1px at 25% 15%, white, transparent),
-      radial-gradient(1px 1px at 35% 35%, white, transparent),
-      radial-gradient(1px 1px at 45% 8%, white, transparent),
-      radial-gradient(1px 1px at 55% 45%, white, transparent),
-      radial-gradient(1px 1px at 65% 20%, white, transparent),
-      radial-gradient(1px 1px at 75% 50%, white, transparent),
-      radial-gradient(1px 1px at 85% 12%, white, transparent),
-      radial-gradient(1px 1px at 95% 40%, white, transparent),
-      radial-gradient(1px 1px at 10% 55%, white, transparent),
-      radial-gradient(1px 1px at 20% 70%, white, transparent),
-      radial-gradient(1px 1px at 30% 60%, white, transparent),
-      radial-gradient(1px 1px at 40% 80%, white, transparent),
-      radial-gradient(1px 1px at 50% 65%, white, transparent),
-      radial-gradient(1px 1px at 60% 90%, white, transparent),
-      radial-gradient(1px 1px at 70% 75%, white, transparent),
-      radial-gradient(1px 1px at 80% 85%, white, transparent),
-      radial-gradient(1px 1px at 90% 70%, white, transparent),
-      radial-gradient(1px 1px at 12% 95%, white, transparent);
-    background-size: 200% 200%;
-    animation: twinkle 4s ease-in-out infinite;
+      radial-gradient(circle at 5% 10%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 15% 25%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 25% 15%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 35% 35%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 45% 8%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 55% 45%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 65% 20%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 75% 50%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 85% 12%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 95% 40%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 10% 55%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 20% 70%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 30% 60%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 40% 80%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 50% 65%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 60% 90%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 70% 75%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 80% 85%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 90% 70%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 12% 95%, white 0%, transparent 0.05%);
+    background-size: 100% 100%;
+    animation: twinkle 3s ease-in-out infinite;
   }
 
   /* Additional star layer for more depth and density */
@@ -103,28 +103,28 @@ All colors MUST be HSL.
     height: 100%;
     z-index: -1;
     background-image: 
-      radial-gradient(1px 1px at 8% 5%, white, transparent),
-      radial-gradient(1px 1px at 18% 18%, white, transparent),
-      radial-gradient(1px 1px at 28% 30%, white, transparent),
-      radial-gradient(1px 1px at 38% 12%, white, transparent),
-      radial-gradient(1px 1px at 48% 42%, white, transparent),
-      radial-gradient(1px 1px at 58% 28%, white, transparent),
-      radial-gradient(1px 1px at 68% 52%, white, transparent),
-      radial-gradient(1px 1px at 78% 15%, white, transparent),
-      radial-gradient(1px 1px at 88% 38%, white, transparent),
-      radial-gradient(1px 1px at 98% 48%, white, transparent),
-      radial-gradient(1px 1px at 13% 62%, white, transparent),
-      radial-gradient(1px 1px at 23% 78%, white, transparent),
-      radial-gradient(1px 1px at 33% 88%, white, transparent),
-      radial-gradient(1px 1px at 43% 72%, white, transparent),
-      radial-gradient(1px 1px at 53% 92%, white, transparent),
-      radial-gradient(1px 1px at 63% 68%, white, transparent),
-      radial-gradient(1px 1px at 73% 82%, white, transparent),
-      radial-gradient(1px 1px at 83% 95%, white, transparent),
-      radial-gradient(1px 1px at 93% 78%, white, transparent),
-      radial-gradient(1px 1px at 3% 88%, white, transparent);
-    background-size: 200% 200%;
-    animation: twinkle 6s ease-in-out infinite reverse;
+      radial-gradient(circle at 8% 5%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 18% 18%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 28% 30%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 38% 12%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 48% 42%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 58% 28%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 68% 52%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 78% 15%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 88% 38%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 98% 48%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 13% 62%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 23% 78%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 33% 88%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 43% 72%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 53% 92%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 63% 68%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 73% 82%, white 0%, transparent 0.08%),
+      radial-gradient(circle at 83% 95%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 93% 78%, white 0%, transparent 0.05%),
+      radial-gradient(circle at 3% 88%, white 0%, transparent 0.05%);
+    background-size: 100% 100%;
+    animation: twinkle 5s ease-in-out infinite reverse;
   }
 
   @keyframes twinkle {
