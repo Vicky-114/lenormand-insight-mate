@@ -68,28 +68,33 @@ All colors MUST be HSL.
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: 
-      radial-gradient(circle at 5% 10%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 15% 25%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 25% 15%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 35% 35%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 45% 8%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 55% 45%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 65% 20%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 75% 50%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 85% 12%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 95% 40%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 10% 55%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 20% 70%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 30% 60%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 40% 80%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 50% 65%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 60% 90%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 70% 75%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 80% 85%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 90% 70%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 12% 95%, white 0%, transparent 0.05%);
-    background-size: 100% 100%;
+    box-shadow: 
+      50px 100px 2px 1px rgba(255, 255, 255, 0.8),
+      150px 250px 2px 1px rgba(255, 255, 255, 0.7),
+      250px 150px 3px 1px rgba(255, 255, 255, 0.9),
+      350px 350px 2px 1px rgba(255, 255, 255, 0.6),
+      450px 80px 2px 1px rgba(255, 255, 255, 0.8),
+      550px 450px 3px 1px rgba(255, 255, 255, 0.7),
+      650px 200px 2px 1px rgba(255, 255, 255, 0.9),
+      750px 500px 2px 1px rgba(255, 255, 255, 0.6),
+      850px 120px 2px 1px rgba(255, 255, 255, 0.8),
+      950px 400px 3px 1px rgba(255, 255, 255, 0.7),
+      100px 550px 2px 1px rgba(255, 255, 255, 0.9),
+      200px 700px 2px 1px rgba(255, 255, 255, 0.6),
+      300px 600px 2px 1px rgba(255, 255, 255, 0.8),
+      400px 800px 3px 1px rgba(255, 255, 255, 0.7),
+      500px 650px 2px 1px rgba(255, 255, 255, 0.9),
+      600px 900px 2px 1px rgba(255, 255, 255, 0.6),
+      700px 750px 3px 1px rgba(255, 255, 255, 0.8),
+      800px 850px 2px 1px rgba(255, 255, 255, 0.7),
+      900px 700px 2px 1px rgba(255, 255, 255, 0.9),
+      120px 950px 2px 1px rgba(255, 255, 255, 0.6),
+      1100px 200px 2px 1px rgba(255, 255, 255, 0.8),
+      1200px 400px 3px 1px rgba(255, 255, 255, 0.7),
+      1300px 150px 2px 1px rgba(255, 255, 255, 0.9),
+      1400px 600px 2px 1px rgba(255, 255, 255, 0.6),
+      1500px 300px 2px 1px rgba(255, 255, 255, 0.8),
+      1600px 500px 3px 1px rgba(255, 255, 255, 0.7);
     animation: twinkle 3s ease-in-out infinite;
   }
 
@@ -102,28 +107,33 @@ All colors MUST be HSL.
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-image: 
-      radial-gradient(circle at 8% 5%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 18% 18%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 28% 30%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 38% 12%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 48% 42%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 58% 28%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 68% 52%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 78% 15%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 88% 38%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 98% 48%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 13% 62%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 23% 78%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 33% 88%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 43% 72%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 53% 92%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 63% 68%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 73% 82%, white 0%, transparent 0.08%),
-      radial-gradient(circle at 83% 95%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 93% 78%, white 0%, transparent 0.05%),
-      radial-gradient(circle at 3% 88%, white 0%, transparent 0.05%);
-    background-size: 100% 100%;
+    box-shadow: 
+      80px 50px 2px 1px rgba(255, 255, 255, 0.7),
+      180px 180px 2px 1px rgba(255, 255, 255, 0.6),
+      280px 300px 3px 1px rgba(255, 255, 255, 0.8),
+      380px 120px 2px 1px rgba(255, 255, 255, 0.7),
+      480px 420px 2px 1px rgba(255, 255, 255, 0.9),
+      580px 280px 3px 1px rgba(255, 255, 255, 0.6),
+      680px 520px 2px 1px rgba(255, 255, 255, 0.8),
+      780px 150px 2px 1px rgba(255, 255, 255, 0.7),
+      880px 380px 3px 1px rgba(255, 255, 255, 0.9),
+      980px 480px 2px 1px rgba(255, 255, 255, 0.6),
+      130px 620px 2px 1px rgba(255, 255, 255, 0.8),
+      230px 780px 2px 1px rgba(255, 255, 255, 0.7),
+      330px 880px 3px 1px rgba(255, 255, 255, 0.9),
+      430px 720px 2px 1px rgba(255, 255, 255, 0.6),
+      530px 920px 2px 1px rgba(255, 255, 255, 0.8),
+      630px 680px 2px 1px rgba(255, 255, 255, 0.7),
+      730px 820px 3px 1px rgba(255, 255, 255, 0.9),
+      830px 950px 2px 1px rgba(255, 255, 255, 0.6),
+      930px 780px 2px 1px rgba(255, 255, 255, 0.8),
+      30px 880px 2px 1px rgba(255, 255, 255, 0.7),
+      1150px 250px 2px 1px rgba(255, 255, 255, 0.9),
+      1250px 450px 3px 1px rgba(255, 255, 255, 0.6),
+      1350px 180px 2px 1px rgba(255, 255, 255, 0.8),
+      1450px 650px 2px 1px rgba(255, 255, 255, 0.7),
+      1550px 350px 3px 1px rgba(255, 255, 255, 0.9),
+      1650px 550px 2px 1px rgba(255, 255, 255, 0.6);
     animation: twinkle 5s ease-in-out infinite reverse;
   }
 
