@@ -59,7 +59,7 @@ All colors MUST be HSL.
     overflow-x: hidden;
   }
 
-  /* Starry night sky background - first layer with visible white stars */
+  /* Star layer A: dense tiny dots covering whole page */
   body::before {
     content: '';
     position: fixed;
@@ -67,35 +67,16 @@ All colors MUST be HSL.
     left: 0;
     width: 100%;
     height: 100%;
+    pointer-events: none;
     z-index: -1;
-    box-shadow: 
-      50px 100px 2px 1px rgba(255, 255, 255, 0.8),
-      150px 250px 2px 1px rgba(255, 255, 255, 0.7),
-      250px 150px 3px 1px rgba(255, 255, 255, 0.9),
-      350px 350px 2px 1px rgba(255, 255, 255, 0.6),
-      450px 80px 2px 1px rgba(255, 255, 255, 0.8),
-      550px 450px 3px 1px rgba(255, 255, 255, 0.7),
-      650px 200px 2px 1px rgba(255, 255, 255, 0.9),
-      750px 500px 2px 1px rgba(255, 255, 255, 0.6),
-      850px 120px 2px 1px rgba(255, 255, 255, 0.8),
-      950px 400px 3px 1px rgba(255, 255, 255, 0.7),
-      100px 550px 2px 1px rgba(255, 255, 255, 0.9),
-      200px 700px 2px 1px rgba(255, 255, 255, 0.6),
-      300px 600px 2px 1px rgba(255, 255, 255, 0.8),
-      400px 800px 3px 1px rgba(255, 255, 255, 0.7),
-      500px 650px 2px 1px rgba(255, 255, 255, 0.9),
-      600px 900px 2px 1px rgba(255, 255, 255, 0.6),
-      700px 750px 3px 1px rgba(255, 255, 255, 0.8),
-      800px 850px 2px 1px rgba(255, 255, 255, 0.7),
-      900px 700px 2px 1px rgba(255, 255, 255, 0.9),
-      120px 950px 2px 1px rgba(255, 255, 255, 0.6),
-      1100px 200px 2px 1px rgba(255, 255, 255, 0.8),
-      1200px 400px 3px 1px rgba(255, 255, 255, 0.7),
-      1300px 150px 2px 1px rgba(255, 255, 255, 0.9),
-      1400px 600px 2px 1px rgba(255, 255, 255, 0.6),
-      1500px 300px 2px 1px rgba(255, 255, 255, 0.8),
-      1600px 500px 3px 1px rgba(255, 255, 255, 0.7);
-    animation: twinkle 3s ease-in-out infinite;
+    background-image:
+      radial-gradient(circle, hsl(var(--foreground) / 0.55) 0 1px, transparent 1.5px),
+      radial-gradient(circle, hsl(var(--foreground) / 0.35) 0 1px, transparent 1.5px),
+      radial-gradient(circle, hsl(var(--foreground) / 0.25) 0 1px, transparent 1.5px);
+    background-size: 3px 3px, 4px 4px, 5px 5px;
+    background-position: 0 0, 1px 2px, 2px 1px;
+    background-repeat: repeat;
+    animation: twinkle 6s ease-in-out infinite alternate;
   }
 
   /* Additional star layer for more depth and density */
@@ -104,9 +85,11 @@ All colors MUST be HSL.
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+    width: 2px;
+    height: 2px;
+    background: hsl(0 0% 100% / 0.7);
+    pointer-events: none;
+    z-index: 0;
     box-shadow: 
       80px 50px 2px 1px rgba(255, 255, 255, 0.7),
       180px 180px 2px 1px rgba(255, 255, 255, 0.6),
