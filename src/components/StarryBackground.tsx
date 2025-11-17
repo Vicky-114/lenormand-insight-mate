@@ -89,22 +89,6 @@ export const StarryBackground = () => {
         ctx.fill();
       });
 
-      // Draw constellation lines
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.lineWidth = 1;
-
-      constellationsRef.current.forEach((constellation) => {
-        ctx.beginPath();
-        constellation.stars.forEach((starIdx, i) => {
-          const star = starsRef.current[starIdx];
-          if (i === 0) {
-            ctx.moveTo(star.x, star.y);
-          } else {
-            ctx.lineTo(star.x, star.y);
-          }
-        });
-        ctx.stroke();
-      });
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
