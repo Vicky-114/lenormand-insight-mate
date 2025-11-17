@@ -24,18 +24,23 @@ export const ReadingRules = ({ language }: ReadingRulesProps) => {
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-card/95 backdrop-blur-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-foreground">
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-gradient-to-br from-card/98 via-card/95 to-background/98 backdrop-blur-xl border-2 border-primary/20 shadow-[0_0_50px_rgba(168,85,247,0.3)]">
+        <DialogHeader className="space-y-3 pb-6 border-b border-border/50">
+          <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
             {getTranslation(language, 'reading_rules')}
           </DialogTitle>
+          <p className="text-sm text-muted-foreground italic">
+            ✨ {language === 'zh-CN' ? '遵循这些规则，获得最准确的占卜结果' : 'Follow these rules for the most accurate reading'}
+          </p>
         </DialogHeader>
         
-        <ol className="space-y-4 text-base text-muted-foreground mt-4">
+        <ol className="space-y-5 text-base mt-6">
           {rules.map((ruleKey, index) => (
-            <li key={ruleKey} className="flex gap-3">
-              <span className="font-semibold text-primary shrink-0 text-lg">{index + 1}.</span>
-              <span className={index === 6 ? 'font-medium text-foreground' : ''}>
+            <li key={ruleKey} className="group flex gap-4 p-4 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+              <span className="font-bold text-primary shrink-0 text-xl w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                {index + 1}
+              </span>
+              <span className={`leading-relaxed ${index === 6 ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}>
                 {getTranslation(language, ruleKey)}
               </span>
             </li>
