@@ -10,14 +10,22 @@ interface Star {
   speed: number;
 }
 
-interface Constellation {
-  stars: number[];
+interface ShootingStar {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  length: number;
+  opacity: number;
+  life: number;
 }
 
 export const StarryBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
+  const shootingStarsRef = useRef<ShootingStar[]>([]);
   const animationFrameRef = useRef<number>();
+  const lastShootingStarRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,61 +43,98 @@ export const StarryBackground = () => {
 
     // Initialize stars
     const initStars = () => {
-      const numStars = 200;
+      const numStars = 260;
       starsRef.current = [];
       
       for (let i = 0; i < numStars; i++) {
         starsRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.5,
-          twinkleSpeed: Math.random() * 0.02 + 0.01,
+          baseSize: 0.6 + Math.random() * 1.8,
+          baseOpacity: 0.5 + Math.random() * 0.4,
+          amplitude: 0.2 + Math.random() * 0.3,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.001 + Math.random() * 0.002,
         });
       }
-
-      generateConstellations();
     };
 
-    // Generate random constellations
-    const generateConstellations = () => {
-      constellationsRef.current = [];
-      const numConstellations = Math.floor(Math.random() * 3) + 2; // 2-4 constellations
+    // Create shooting star
+    const createShootingStar = () => {
+      const fromLeft = Math.random() > 0.5;
+      const startX = fromLeft ? 0 : canvas.width;
+      const startY = Math.random() * canvas.height * 0.5; // Top half
+      const angle = fromLeft ? Math.PI / 6 : (5 * Math.PI / 6); // Diagonal down
+      const speed = 8 + Math.random() * 4;
       
-      for (let i = 0; i < numConstellations; i++) {
-        const numStarsInConstellation = Math.floor(Math.random() * 4) + 3; // 3-6 stars
-        const availableStars = starsRef.current.length;
-        const constellation: Constellation = { stars: [] };
-        
-        // Pick random stars that are relatively close to each other
-        const startIdx = Math.floor(Math.random() * (availableStars - numStarsInConstellation));
-        for (let j = 0; j < numStarsInConstellation; j++) {
-          constellation.stars.push(startIdx + j);
-        }
-        
-        constellationsRef.current.push(constellation);
-      }
+      shootingStarsRef.current.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: 60 + Math.random() * 40,
+        opacity: 1,
+        life: 1,
+      });
     };
 
     // Animation loop
     const animate = () => {
       if (!ctx || !canvas) return;
+      const t = performance.now();
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw stars
+      // Update and draw twinkling stars
       starsRef.current.forEach((star) => {
-        // Twinkle effect
-        star.opacity += (Math.random() - 0.5) * star.twinkleSpeed;
-        star.opacity = Math.max(0.3, Math.min(1, star.opacity));
+        const twinkle = Math.sin(t * star.speed + star.phase);
+        const opacity = Math.min(1, Math.max(0.2, star.baseOpacity + star.amplitude * twinkle));
+        const size = Math.max(0.5, star.baseSize * (0.9 + 0.1 * (1 + Math.cos(t * star.speed + star.phase))));
 
-        // Draw star
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
         ctx.fill();
       });
 
+      // Update and draw shooting stars
+      shootingStarsRef.current = shootingStarsRef.current.filter(star => {
+        star.x += star.vx;
+        star.y += star.vy;
+        star.life -= 0.012;
+        star.opacity = Math.max(0, star.life);
+
+        if (star.opacity > 0 && star.x >= 0 && star.x <= canvas.width && star.y >= 0 && star.y <= canvas.height) {
+          // Draw shooting star trail
+          const gradient = ctx.createLinearGradient(
+            star.x,
+            star.y,
+            star.x - star.vx * star.length / 10,
+            star.y - star.vy * star.length / 10
+          );
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
+          gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(star.x, star.y);
+          ctx.lineTo(
+            star.x - star.vx * star.length / 10,
+            star.y - star.vy * star.length / 10
+          );
+          ctx.stroke();
+
+          return true;
+        }
+        return false;
+      });
+
+      // Create shooting star every 20 seconds
+      if (t - lastShootingStarRef.current > 20000) {
+        createShootingStar();
+        lastShootingStarRef.current = t;
+      }
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -98,24 +143,18 @@ export const StarryBackground = () => {
     window.addEventListener('resize', resizeCanvas);
     animate();
 
-    // Change constellations every 10 seconds
-    const constellationInterval = setInterval(() => {
-      generateConstellations();
-    }, 10000);
-
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
-      clearInterval(constellationInterval);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="absolute inset-0 pointer-events-none"
       style={{ zIndex: 0 }}
     />
   );
