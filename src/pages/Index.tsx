@@ -13,7 +13,6 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Sparkles, RotateCcw, Camera } from 'lucide-react';
 import { toast } from 'sonner';
-
 const Index = () => {
   const [question, setQuestion] = useState('');
   const [language, setLanguage] = useState<Language>('en');
@@ -22,9 +21,7 @@ const Index = () => {
   const [isReading, setIsReading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  
   const maxCards = 3;
-  
   const handleQuestionChange = (value: string) => {
     setQuestion(value);
     if (value.length > 0) {
@@ -32,7 +29,6 @@ const Index = () => {
       setLanguage(detectedLang);
     }
   };
-  
   const handleCardSelect = (card: LenormandCard) => {
     setSelectedCards(prev => {
       const exists = prev.find(c => c.id === card.id);
@@ -45,75 +41,52 @@ const Index = () => {
       return prev;
     });
   };
-  
   const handleReset = () => {
     setSelectedCards([]);
     setReading(null);
     setCapturedImage(null);
   };
-  
   const handleCameraCapture = (imageData: string) => {
     setCapturedImage(imageData);
     setShowCamera(false);
-    toast.success(
-      language === 'zh-CN' ? '照片已拍摄！请手动选择卡牌' : 
-      language === 'ko' ? '사진이 촬영되었습니다! 수동으로 카드를 선택하세요' : 
-      'Photo captured! Please select cards manually'
-    );
+    toast.success(language === 'zh-CN' ? '照片已拍摄！请手动选择卡牌' : language === 'ko' ? '사진이 촬영되었습니다! 수동으로 카드를 선택하세요' : 'Photo captured! Please select cards manually');
   };
-  
   const handleCardsIdentified = (cardIds: number[]) => {
-    const cards = cardIds
-      .map(id => LENORMAND_CARDS.find(c => c.id === id))
-      .filter(Boolean) as LenormandCard[];
-    
+    const cards = cardIds.map(id => LENORMAND_CARDS.find(c => c.id === id)).filter(Boolean) as LenormandCard[];
     setSelectedCards(cards);
     setShowCamera(false);
     setCapturedImage(null);
   };
-  
   const handleGetReading = async () => {
     if (!question.trim()) {
       toast.error(language === 'zh-CN' ? '请输入问题' : language === 'ko' ? '질문을 입력하세요' : 'Please enter a question');
       return;
     }
-    
     if (selectedCards.length !== maxCards) {
       toast.error(language === 'zh-CN' ? `请选择${maxCards}张卡牌` : language === 'ko' ? `${maxCards}장의 카드를 선택하세요` : `Please select ${maxCards} cards`);
       return;
     }
-    
     setIsReading(true);
-    
     try {
       // Generate deep AI-powered reading
       const result = await generateReading(selectedCards, question, language, true);
       setReading(result);
-      
-      toast.success(
-        language === 'zh-CN' ? 'AI深度解读完成' : 
-        language === 'ko' ? 'AI 심층 분석 완료' : 
-        'AI deep reading complete'
-      );
-      
+      toast.success(language === 'zh-CN' ? 'AI深度解读完成' : language === 'ko' ? 'AI 심층 분석 완료' : 'AI deep reading complete');
+
       // Scroll to results
       setTimeout(() => {
-        document.getElementById('reading-result')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('reading-result')?.scrollIntoView({
+          behavior: 'smooth'
+        });
       }, 100);
     } catch (error) {
       console.error('Reading error:', error);
-      toast.error(
-        language === 'zh-CN' ? '解读失败，请重试' : 
-        language === 'ko' ? '분석 실패, 다시 시도하세요' : 
-        'Reading failed, please try again'
-      );
+      toast.error(language === 'zh-CN' ? '解读失败，请重试' : language === 'ko' ? '분석 실패, 다시 시도하세요' : 'Reading failed, please try again');
     } finally {
       setIsReading(false);
     }
   };
-  
-  return (
-    <div className="relative min-h-screen bg-gradient-mystic">
+  return <div className="relative min-h-screen bg-gradient-mystic">
       <StarryBackground />
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="space-y-8">
@@ -121,12 +94,12 @@ const Index = () => {
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-3">
                 <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+                <h1 className="text-4xl text-blue-200 font-bold text-center font-serif md:text-6xl">
                   {getTranslation(language, 'appTitle')}
                 </h1>
                 <Sparkles className="w-8 h-8 text-accent animate-pulse" />
               </div>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-lg text-violet-50 font-serif">
                 {getTranslation(language, 'appSubtitle')}
               </p>
             </div>
@@ -137,38 +110,24 @@ const Index = () => {
             <label className="text-sm font-medium text-foreground">
               {language === 'zh-CN' ? '你的问题' : language === 'ko' ? '당신의 질문' : 'Your Question'}
             </label>
-            <Input
-              value={question}
-              onChange={(e) => handleQuestionChange(e.target.value)}
-              placeholder={getTranslation(language, 'questionPlaceholder')}
-              className="bg-background/50 border-border text-lg"
-            />
-            {question && (
-              <p className="text-xs text-muted-foreground">
-                {language === 'zh-CN' ? '检测到：简体中文' : 
-                 language === 'ko' ? '검출됨: 한국어' : 
-                 'Detected: English'}
-              </p>
-            )}
+            <Input value={question} onChange={e => handleQuestionChange(e.target.value)} placeholder={getTranslation(language, 'questionPlaceholder')} className="bg-background/50 border-border text-lg" />
+            {question && <p className="text-xs text-muted-foreground">
+                {language === 'zh-CN' ? '检测到：简体中文' : language === 'ko' ? '검출됨: 한국어' : 'Detected: English'}
+              </p>}
               </div>
             </Card>
             
             {/* Selected Cards Display */}
-            {selectedCards.length > 0 && (
-              <div>
+            {selectedCards.length > 0 && <div>
                 <SpreadLayout selectedCards={selectedCards} language={language} />
-              </div>
-            )}
+              </div>}
             
             {/* Captured Image Display */}
-            {capturedImage && (
-              <Card className="max-w-2xl mx-auto p-4 bg-gradient-card border-accent/50">
+            {capturedImage && <Card className="max-w-2xl mx-auto p-4 bg-gradient-card border-accent/50">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <p className="text-sm font-medium">
-                      {language === 'zh-CN' ? '已拍摄的照片' : 
-                       language === 'ko' ? '촬영된 사진' : 
-                       'Captured Photo'}
+                      {language === 'zh-CN' ? '已拍摄的照片' : language === 'ko' ? '촬영된 사진' : 'Captured Photo'}
                     </p>
                     <Button variant="ghost" size="sm" onClick={() => setCapturedImage(null)}>
                       {language === 'zh-CN' ? '删除' : language === 'ko' ? '삭제' : 'Remove'}
@@ -176,13 +135,10 @@ const Index = () => {
                   </div>
                   <img src={capturedImage} alt="Captured cards" className="w-full rounded-lg" />
                   <p className="text-xs text-muted-foreground text-center">
-                    {language === 'zh-CN' ? '请在下方手动选择识别到的卡牌' : 
-                     language === 'ko' ? '아래에서 인식된 카드를 수동으로 선택하세요' : 
-                     'Please manually select the identified cards below'}
+                    {language === 'zh-CN' ? '请在下方手动选择识别到的卡牌' : language === 'ko' ? '아래에서 인식된 카드를 수동으로 선택하세요' : 'Please manually select the identified cards below'}
                   </p>
                 </div>
-              </Card>
-            )}
+              </Card>}
             
             {/* Card Selection */}
             <Card className="max-w-6xl mx-auto p-6 bg-gradient-card border-border shadow-card">
@@ -191,61 +147,36 @@ const Index = () => {
                   {getTranslation(language, 'selectCards')}
                 </h2>
                 <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setShowCamera(true)}
-                className="gap-2"
-              >
+              <Button variant="outline" size="sm" onClick={() => setShowCamera(true)} className="gap-2">
                 <Camera className="w-4 h-4" />
-                {language === 'zh-CN' ? '使用摄像头' : 
-                 language === 'ko' ? '카메라 사용' : 
-                 'Use Camera'}
+                {language === 'zh-CN' ? '使用摄像头' : language === 'ko' ? '카메라 사용' : 'Use Camera'}
               </Button>
-              {selectedCards.length > 0 && (
-                <Button variant="outline" size="sm" onClick={handleReset}>
+              {selectedCards.length > 0 && <Button variant="outline" size="sm" onClick={handleReset}>
                   <RotateCcw className="w-4 h-4 mr-2" />
                   {getTranslation(language, 'reset')}
-                </Button>
-              )}
+                </Button>}
             </div>
           </div>
           
-          <CardSelector
-            selectedCards={selectedCards}
-            onCardSelect={handleCardSelect}
-            maxCards={maxCards}
-            language={language}
-          />
+          <CardSelector selectedCards={selectedCards} onCardSelect={handleCardSelect} maxCards={maxCards} language={language} />
           
-          {selectedCards.length === maxCards && (
-            <div className="mt-6 text-center">
-              <Button
-                size="lg"
-                onClick={handleGetReading}
-                disabled={isReading}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow"
-              >
+          {selectedCards.length === maxCards && <div className="mt-6 text-center">
+              <Button size="lg" onClick={handleGetReading} disabled={isReading} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow">
                 <Sparkles className="w-5 h-5 mr-2" />
                 {isReading ? getTranslation(language, 'reading') : getTranslation(language, 'getReading')}
               </Button>
-            </div>
-          )}
+            </div>}
             </Card>
             
             {/* Reading Result */}
-          {reading && (
-            <div id="reading-result" className="max-w-4xl mx-auto">
+          {reading && <div id="reading-result" className="max-w-4xl mx-auto">
               <ReadingResultDisplay result={reading} language={language} />
-            </div>
-          )}
+            </div>}
         </div>
       </div>
       
       {/* Floating Rules Button */}
       <ReadingRules language={language} />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
