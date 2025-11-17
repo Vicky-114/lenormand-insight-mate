@@ -245,7 +245,7 @@ const Index = () => {
           
           {/* Rules Sidebar */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <ReadingRules />
+            <ReadingRules language={language} />
           </div>
         </div>
       </div>
