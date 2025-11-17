@@ -16,9 +16,8 @@ export const ReadingRules = ({ language }: ReadingRulesProps) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button 
-          variant="outline" 
           size="lg"
-          className="fixed bottom-6 right-6 z-50 shadow-lg bg-card/90 backdrop-blur-sm border-border/50 hover:bg-card"
+          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] hover:bg-right-bottom text-primary-foreground shadow-glow hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-500 animate-pulse hover:animate-none border-2 border-primary/20 hover:scale-110"
         >
           <BookOpen className="w-5 h-5 mr-2" />
           {getTranslation(language, 'reading_rules')}
