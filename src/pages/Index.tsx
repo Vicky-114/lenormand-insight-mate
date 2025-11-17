@@ -7,6 +7,7 @@ import { SpreadLayout } from '@/components/SpreadLayout';
 import { ReadingResultDisplay } from '@/components/ReadingResult';
 import { CameraCapture } from '@/components/CameraCapture';
 import { StarryBackground } from '@/components/StarryBackground';
+import { ReadingRules } from '@/components/ReadingRules';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -115,22 +116,25 @@ const Index = () => {
     <div className="relative min-h-screen bg-gradient-mystic">
       <StarryBackground />
       <div className="container mx-auto px-4 py-8 md:py-12">
-        {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-              {getTranslation(language, 'appTitle')}
-            </h1>
-            <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-          </div>
-          <p className="text-lg text-muted-foreground">
-            {getTranslation(language, 'appSubtitle')}
-          </p>
-        </div>
-        
-        {/* Question Input */}
-        <Card className="max-w-2xl mx-auto p-6 mb-8 bg-gradient-card border-accent/50 shadow-card">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+          {/* Main Content */}
+          <div className="space-y-8">
+            {/* Header */}
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-3">
+                <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+                  {getTranslation(language, 'appTitle')}
+                </h1>
+                <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+              </div>
+              <p className="text-lg text-muted-foreground">
+                {getTranslation(language, 'appSubtitle')}
+              </p>
+            </div>
+            
+            {/* Question Input */}
+            <Card className="max-w-2xl mx-auto p-6 bg-gradient-card border-accent/50 shadow-card">
           <div className="space-y-4">
             <label className="text-sm font-medium text-foreground">
               {language === 'zh-CN' ? '你的问题' : language === 'ko' ? '당신의 질문' : 'Your Question'}
@@ -148,47 +152,47 @@ const Index = () => {
                  'Detected: English'}
               </p>
             )}
-          </div>
-        </Card>
-        
-        {/* Selected Cards Display */}
-        {selectedCards.length > 0 && (
-          <div className="mb-8">
-            <SpreadLayout selectedCards={selectedCards} language={language} />
-          </div>
-        )}
-        
-        {/* Captured Image Display */}
-        {capturedImage && (
-          <Card className="max-w-2xl mx-auto p-4 mb-8 bg-gradient-card border-accent/50">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <p className="text-sm font-medium">
-                  {language === 'zh-CN' ? '已拍摄的照片' : 
-                   language === 'ko' ? '촬영된 사진' : 
-                   'Captured Photo'}
-                </p>
-                <Button variant="ghost" size="sm" onClick={() => setCapturedImage(null)}>
-                  {language === 'zh-CN' ? '删除' : language === 'ko' ? '삭제' : 'Remove'}
-                </Button>
               </div>
-              <img src={capturedImage} alt="Captured cards" className="w-full rounded-lg" />
-              <p className="text-xs text-muted-foreground text-center">
-                {language === 'zh-CN' ? '请在下方手动选择识别到的卡牌' : 
-                 language === 'ko' ? '아래에서 인식된 카드를 수동으로 선택하세요' : 
-                 'Please manually select the identified cards below'}
-              </p>
-            </div>
-          </Card>
-        )}
-        
-        {/* Card Selection */}
-        <Card className="max-w-6xl mx-auto p-6 mb-8 bg-gradient-card border-border shadow-card">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-accent">
-              {getTranslation(language, 'selectCards')}
-            </h2>
-            <div className="flex gap-2">
+            </Card>
+            
+            {/* Selected Cards Display */}
+            {selectedCards.length > 0 && (
+              <div>
+                <SpreadLayout selectedCards={selectedCards} language={language} />
+              </div>
+            )}
+            
+            {/* Captured Image Display */}
+            {capturedImage && (
+              <Card className="max-w-2xl mx-auto p-4 bg-gradient-card border-accent/50">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm font-medium">
+                      {language === 'zh-CN' ? '已拍摄的照片' : 
+                       language === 'ko' ? '촬영된 사진' : 
+                       'Captured Photo'}
+                    </p>
+                    <Button variant="ghost" size="sm" onClick={() => setCapturedImage(null)}>
+                      {language === 'zh-CN' ? '删除' : language === 'ko' ? '삭제' : 'Remove'}
+                    </Button>
+                  </div>
+                  <img src={capturedImage} alt="Captured cards" className="w-full rounded-lg" />
+                  <p className="text-xs text-muted-foreground text-center">
+                    {language === 'zh-CN' ? '请在下方手动选择识别到的卡牌' : 
+                     language === 'ko' ? '아래에서 인식된 카드를 수동으로 선택하세요' : 
+                     'Please manually select the identified cards below'}
+                  </p>
+                </div>
+              </Card>
+            )}
+            
+            {/* Card Selection */}
+            <Card className="max-w-6xl mx-auto p-6 bg-gradient-card border-border shadow-card">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-accent">
+                  {getTranslation(language, 'selectCards')}
+                </h2>
+                <div className="flex gap-2">
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -229,14 +233,21 @@ const Index = () => {
               </Button>
             </div>
           )}
-        </Card>
-        
-        {/* Reading Result */}
-        {reading && (
-          <div id="reading-result" className="max-w-4xl mx-auto">
-            <ReadingResultDisplay result={reading} language={language} />
+            </Card>
+            
+            {/* Reading Result */}
+            {reading && (
+              <div id="reading-result" className="max-w-4xl mx-auto">
+                <ReadingResultDisplay result={reading} language={language} />
+              </div>
+            )}
           </div>
-        )}
+          
+          {/* Rules Sidebar */}
+          <div className="lg:sticky lg:top-8 lg:self-start">
+            <ReadingRules />
+          </div>
+        </div>
       </div>
     </div>
   );
