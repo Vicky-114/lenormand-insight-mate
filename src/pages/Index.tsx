@@ -107,11 +107,11 @@ const Index = () => {
             {/* Question Input */}
             <Card className="max-w-2xl mx-auto p-6 bg-gradient-card border-accent/50 shadow-card">
           <div className="space-y-4">
-            <label className="text-sm font-medium text-foreground">
+            <label className="text-sm font-medium text-foreground font-serif">
               {language === 'zh-CN' ? '你的问题' : language === 'ko' ? '당신의 질문' : 'Your Question'}
             </label>
             <Input value={question} onChange={e => handleQuestionChange(e.target.value)} placeholder={getTranslation(language, 'questionPlaceholder')} className="bg-background/50 border-border text-lg" />
-            {question && <p className="text-xs text-muted-foreground">
+            {question && <p className="text-xs font-serif text-indigo-500">
                 {language === 'zh-CN' ? '检测到：简体中文' : language === 'ko' ? '검출됨: 한국어' : 'Detected: English'}
               </p>}
               </div>
@@ -143,7 +143,7 @@ const Index = () => {
             {/* Card Selection */}
             <Card className="max-w-6xl mx-auto p-6 bg-gradient-card border-border shadow-card">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-accent">
+                <h2 className="text-2xl font-bold text-accent font-serif">
                   {getTranslation(language, 'selectCards')}
                 </h2>
                 <div className="flex gap-2">
