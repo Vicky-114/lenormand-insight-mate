@@ -3,9 +3,11 @@ import { useEffect, useRef } from 'react';
 interface Star {
   x: number;
   y: number;
-  size: number;
-  opacity: number;
-  twinkleSpeed: number;
+  baseSize: number;
+  baseOpacity: number;
+  amplitude: number;
+  phase: number;
+  speed: number;
 }
 
 interface Constellation {
@@ -15,7 +17,6 @@ interface Constellation {
 export const StarryBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
-  const constellationsRef = useRef<Constellation[]>([]);
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
