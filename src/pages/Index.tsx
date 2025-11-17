@@ -116,9 +116,7 @@ const Index = () => {
     <div className="relative min-h-screen bg-gradient-mystic">
       <StarryBackground />
       <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
-          {/* Main Content */}
-          <div className="space-y-8">
+        <div className="space-y-8">
             {/* Header */}
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-3">
@@ -236,19 +234,16 @@ const Index = () => {
             </Card>
             
             {/* Reading Result */}
-            {reading && (
-              <div id="reading-result" className="max-w-4xl mx-auto">
-                <ReadingResultDisplay result={reading} language={language} />
-              </div>
-            )}
-          </div>
-          
-          {/* Rules Sidebar */}
-          <div className="lg:sticky lg:top-8 lg:self-start">
-            <ReadingRules language={language} />
-          </div>
+          {reading && (
+            <div id="reading-result" className="max-w-4xl mx-auto">
+              <ReadingResultDisplay result={reading} language={language} />
+            </div>
+          )}
         </div>
       </div>
+      
+      {/* Floating Rules Button */}
+      <ReadingRules language={language} />
     </div>
   );
 };
