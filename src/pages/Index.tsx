@@ -8,6 +8,7 @@ import { ReadingResultDisplay } from '@/components/ReadingResult';
 import { CameraCapture } from '@/components/CameraCapture';
 import { StarryBackground } from '@/components/StarryBackground';
 import { ReadingRules } from '@/components/ReadingRules';
+import { SelectionHistory } from '@/components/SelectionHistory';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -40,6 +41,11 @@ const Index = () => {
       }
       return prev;
     });
+  };
+
+  const handleRestoreSelection = (cards: LenormandCard[]) => {
+    setSelectedCards(cards);
+    toast.success(language === 'zh-CN' ? '已恢复选择' : language === 'ko' ? '선택 복원됨' : 'Selection restored');
   };
   const handleReset = () => {
     setSelectedCards([]);
@@ -190,6 +196,13 @@ const Index = () => {
                     )}
                   </div>
                 </div>
+          
+          <SelectionHistory 
+            language={language}
+            onRestore={handleRestoreSelection}
+            onSave={() => {}}
+            currentSelection={selectedCards}
+          />
           
           <CardSelector selectedCards={selectedCards} onCardSelect={handleCardSelect} maxCards={maxCards} language={language} />
           
