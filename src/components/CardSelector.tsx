@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-// Import card images for cards 1-30
+// Import card images for cards 1-36
 import card1 from '@/assets/cards/1.png';
 import card2 from '@/assets/cards/2.png';
 import card3 from '@/assets/cards/3.png';
@@ -36,6 +36,12 @@ import card27 from '@/assets/cards/27.png';
 import card28 from '@/assets/cards/28.png';
 import card29 from '@/assets/cards/29.png';
 import card30 from '@/assets/cards/30.png';
+import card31 from '@/assets/cards/31.png';
+import card32 from '@/assets/cards/32.png';
+import card33 from '@/assets/cards/33.png';
+import card34 from '@/assets/cards/34.png';
+import card35 from '@/assets/cards/35.png';
+import card36 from '@/assets/cards/36.png';
 
 const cardImages: Record<number, string> = {
   1: card1,
@@ -68,6 +74,12 @@ const cardImages: Record<number, string> = {
   28: card28,
   29: card29,
   30: card30,
+  31: card31,
+  32: card32,
+  33: card33,
+  34: card34,
+  35: card35,
+  36: card36,
 };
 
 interface CardSelectorProps {
