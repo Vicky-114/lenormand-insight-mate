@@ -91,25 +91,14 @@ interface CardSelectorProps {
 
 export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }: CardSelectorProps) => {
   const [numberInput, setNumberInput] = useState('');
-  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   
   const isSelected = (card: LenormandCard) => 
     selectedCards.some(c => c.id === card.id);
   
-  const handleCardClick = (card: LenormandCard, e: React.MouseEvent) => {
-    const isFlipped = flippedCards.has(card.id);
+  const handleCardClick = (card: LenormandCard) => {
     const selected = isSelected(card);
-    
-    if (!isFlipped) {
-      // 如果是背面（数字面），点击翻转到正面
-      setFlippedCards(prev => new Set(prev).add(card.id));
-    } else {
-      // 如果是正面（卡面），点击选择/取消选择
-      if (selected) {
-        onCardSelect(card);
-      } else if (canSelect) {
-        onCardSelect(card);
-      }
+    if (selected || canSelect) {
+      onCardSelect(card);
     }
   };
   
@@ -174,24 +163,33 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
         {LENORMAND_CARDS.map((card) => {
           const selected = isSelected(card);
           
-          const isFlipped = flippedCards.has(card.id);
-          
           return (
-            <div
+            <Card
               key={card.id}
               className={cn(
-                "flip-card aspect-[2/3] cursor-pointer",
-                isFlipped && "flipped"
+                "aspect-[2/3] cursor-pointer transition-all duration-300 group overflow-hidden relative",
+                "bg-gradient-to-br from-primary/20 via-card to-primary/20 border-2 border-accent/40",
+                "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105",
+                selected && "border-accent border-2 shadow-glow scale-105",
+                !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
               )}
-              onClick={(e) => handleCardClick(card, e)}
+              onClick={() => handleCardClick(card)}
             >
-              <div className="flip-card-inner">
-                {/* 背面 - 默认显示数字 */}
-                <Card className={cn(
-                  "flip-card-front transition-all duration-300 group overflow-hidden relative",
-                  "bg-gradient-to-br from-primary/20 via-card to-primary/20 border-2 border-accent/40",
-                  "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105"
-                )}>
+              {cardImages[card.id] ? (
+                <>
+                  <img 
+                    src={cardImages[card.id]} 
+                    alt={getCardName(card)}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                  {selected && (
+                    <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
+                      <span className="text-xs text-accent-foreground font-bold">✓</span>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
                   {/* 装饰性背景图案 */}
                   <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-2 left-2 text-accent/30">✦</div>
@@ -209,41 +207,15 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                       {card.id}
                     </div>
                   </div>
-                </Card>
-                
-                {/* 正面 - 点击后显示卡牌图片 */}
-                <Card className={cn(
-                  "flip-card-back transition-all duration-300 group overflow-hidden",
-                  "bg-gradient-card border-border hover:border-primary hover:scale-105 hover:z-10",
-                  "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
-                  selected && "border-accent border-2 shadow-glow scale-105",
-                  !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
-                )}>
-                  {cardImages[card.id] ? (
-                    <img 
-                      src={cardImages[card.id]} 
-                      alt={getCardName(card)}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                      <div className="flex flex-col items-center justify-center h-full p-2">
-                        <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
-                        <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                          {getCardName(card)}
-                        </div>
-                      </div>
-                    </>
-                  )}
+                  
                   {selected && (
                     <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
                       <span className="text-xs text-accent-foreground font-bold">✓</span>
                     </div>
                   )}
-                </Card>
-              </div>
-            </div>
+                </>
+              )}
+            </Card>
           );
         })}
       </div>
