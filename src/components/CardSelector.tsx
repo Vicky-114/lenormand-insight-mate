@@ -91,9 +91,23 @@ interface CardSelectorProps {
 
 export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }: CardSelectorProps) => {
   const [numberInput, setNumberInput] = useState('');
+  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   
   const isSelected = (card: LenormandCard) => 
     selectedCards.some(c => c.id === card.id);
+  
+  const toggleFlip = (cardId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFlippedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+      }
+      return newSet;
+    });
+  };
   
   const canSelect = selectedCards.length < maxCards;
   
@@ -156,15 +170,14 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
         {LENORMAND_CARDS.map((card) => {
           const selected = isSelected(card);
           
+          const isFlipped = flippedCards.has(card.id);
+          
           return (
-            <Card
+            <div
               key={card.id}
               className={cn(
-                "relative aspect-[2/3] cursor-pointer transition-all duration-300 group overflow-hidden",
-                "bg-gradient-card border-border hover:border-primary hover:scale-110 hover:z-10",
-                "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
-                selected && "border-accent border-2 shadow-glow scale-105",
-                !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
+                "flip-card aspect-[2/3]",
+                isFlipped && "flipped"
               )}
               onClick={() => {
                 if (selected) {
@@ -174,29 +187,69 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                 }
               }}
             >
-              {cardImages[card.id] ? (
-                <img 
-                  src={cardImages[card.id]} 
-                  alt={getCardName(card)}
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              ) : (
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                  <div className="flex flex-col items-center justify-center h-full p-2">
-                    <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
-                    <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+              <div className="flip-card-inner">
+                {/* 正面 - 卡牌图片 */}
+                <Card className={cn(
+                  "flip-card-front cursor-pointer transition-all duration-300 group overflow-hidden",
+                  "bg-gradient-card border-border hover:border-primary hover:scale-110 hover:z-10",
+                  "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
+                  selected && "border-accent border-2 shadow-glow scale-105",
+                  !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
+                )}>
+                  {cardImages[card.id] ? (
+                    <img 
+                      src={cardImages[card.id]} 
+                      alt={getCardName(card)}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                      <div className="flex flex-col items-center justify-center h-full p-2">
+                        <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
+                        <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                          {getCardName(card)}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {selected && (
+                    <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
+                      <span className="text-xs text-accent-foreground font-bold">✓</span>
+                    </div>
+                  )}
+                  <button
+                    onClick={(e) => toggleFlip(card.id, e)}
+                    className="absolute bottom-1 right-1 w-6 h-6 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors z-20"
+                  >
+                    <span className="text-xs text-primary-foreground">↻</span>
+                  </button>
+                </Card>
+                
+                {/* 背面 - 卡牌信息 */}
+                <Card className={cn(
+                  "flip-card-back cursor-pointer transition-all duration-300 group overflow-hidden",
+                  "bg-gradient-to-br from-card/95 via-primary/10 to-card/95 border-2 border-accent/60",
+                  "hover:border-accent hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]"
+                )}>
+                  <div className="flex flex-col items-center justify-center h-full p-2 relative">
+                    <div className="text-2xl mb-1 font-bold text-accent">{card.id}</div>
+                    <div className="text-xs text-center font-semibold text-foreground mb-1">
                       {getCardName(card)}
                     </div>
+                    <div className="text-[10px] text-center text-muted-foreground leading-tight">
+                      {card.keywords[language].slice(0, 3).join(' • ')}
+                    </div>
+                    <button
+                      onClick={(e) => toggleFlip(card.id, e)}
+                      className="absolute bottom-1 right-1 w-6 h-6 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors z-20"
+                    >
+                      <span className="text-xs text-primary-foreground">↻</span>
+                    </button>
                   </div>
-                </>
-              )}
-              {selected && (
-                <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
-                  <span className="text-xs text-accent-foreground font-bold">✓</span>
-                </div>
-              )}
-            </Card>
+                </Card>
+              </div>
+            </div>
           );
         })}
       </div>
