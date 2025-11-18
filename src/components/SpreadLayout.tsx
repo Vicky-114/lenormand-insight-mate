@@ -133,13 +133,7 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
                   "transition-all duration-500 hover:scale-110 hover:-translate-y-2"
                 )}>
                   <div className="flex flex-col items-center justify-center h-full p-4">
-                    <div className="text-3xl md:text-4xl mb-2 font-bold text-accent">{card.id}</div>
-                    <div className="text-sm md:text-base text-center font-semibold text-foreground mb-3">
-                      {getCardName(card)}
-                    </div>
-                    <div className="text-xs text-center text-muted-foreground leading-relaxed">
-                      {card.keywords[language].slice(0, 4).join(' • ')}
-                    </div>
+                    <div className="text-5xl md:text-6xl font-bold text-accent">{card.id}</div>
                   </div>
                 </Card>
                 
