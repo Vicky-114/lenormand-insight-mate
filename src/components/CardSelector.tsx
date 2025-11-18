@@ -96,9 +96,39 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
   const isSelected = (card: LenormandCard) => 
     selectedCards.some(c => c.id === card.id);
   
+  // Audio feedback for card selection
+  const playSound = (frequency: number, duration: number = 0.1) => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    } catch (error) {
+      // Silently fail if audio is not supported
+      console.log('Audio not supported');
+    }
+  };
+  
   const handleCardClick = (card: LenormandCard) => {
     const selected = isSelected(card);
     if (selected || canSelect) {
+      // Play sound based on action
+      if (selected) {
+        playSound(400); // Lower frequency for deselection
+      } else {
+        playSound(800); // Higher frequency for selection
+      }
       onCardSelect(card);
     }
   };
