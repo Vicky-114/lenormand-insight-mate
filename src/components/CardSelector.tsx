@@ -193,13 +193,7 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                   "hover:border-accent hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:scale-105"
                 )}>
                   <div className="flex flex-col items-center justify-center h-full p-2">
-                    <div className="text-2xl mb-1 font-bold text-accent">{card.id}</div>
-                    <div className="text-xs text-center font-semibold text-foreground mb-1">
-                      {getCardName(card)}
-                    </div>
-                    <div className="text-[10px] text-center text-muted-foreground leading-tight">
-                      {card.keywords[language].slice(0, 3).join(' • ')}
-                    </div>
+                    <div className="text-3xl font-bold text-accent">{card.id}</div>
                   </div>
                 </Card>
                 
