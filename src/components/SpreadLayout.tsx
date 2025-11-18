@@ -98,8 +98,7 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
     }
   };
   
-  const toggleFlip = (cardId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCardClick = (cardId: number) => {
     setFlippedCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(cardId)) {
@@ -121,11 +120,32 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
         
         return (
           <div key={card.id} className="flex flex-col items-center gap-3 animate-fade-in" style={{animationDelay: `${index * 0.15}s`}}>
-            <div className={cn("flip-card w-32 h-48 md:w-40 md:h-60", isFlipped && "flipped")}>
+            <div 
+              className={cn("flip-card w-32 h-48 md:w-40 md:h-60 cursor-pointer", isFlipped && "flipped")}
+              onClick={() => handleCardClick(card.id)}
+            >
               <div className="flip-card-inner">
-                {/* 正面 - 卡牌图片 */}
+                {/* 背面 - 默认显示数字 */}
                 <Card className={cn(
                   "flip-card-front relative group overflow-hidden",
+                  "bg-gradient-to-br from-card/95 via-primary/20 to-card/95 backdrop-blur-sm border-2 border-accent",
+                  "shadow-[0_8px_32px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_48px_rgba(168,85,247,0.5)]",
+                  "transition-all duration-500 hover:scale-110 hover:-translate-y-2"
+                )}>
+                  <div className="flex flex-col items-center justify-center h-full p-4">
+                    <div className="text-3xl md:text-4xl mb-2 font-bold text-accent">{card.id}</div>
+                    <div className="text-sm md:text-base text-center font-semibold text-foreground mb-3">
+                      {getCardName(card)}
+                    </div>
+                    <div className="text-xs text-center text-muted-foreground leading-relaxed">
+                      {card.keywords[language].slice(0, 4).join(' • ')}
+                    </div>
+                  </div>
+                </Card>
+                
+                {/* 正面 - 点击后显示卡牌图片 */}
+                <Card className={cn(
+                  "flip-card-back relative group overflow-hidden",
                   "bg-gradient-to-br from-card/95 via-card/90 to-background/95 backdrop-blur-sm border-2 border-accent/80",
                   "shadow-[0_8px_32px_rgba(168,85,247,0.3)] hover:shadow-[0_12px_48px_rgba(168,85,247,0.5)]",
                   "transition-all duration-500 hover:scale-110 hover:-translate-y-2"
@@ -161,35 +181,6 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
                       <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-accent/50 group-hover:border-accent transition-colors duration-300"></div>
                     </>
                   )}
-                  <button
-                    onClick={(e) => toggleFlip(card.id, e)}
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-primary/90 hover:bg-primary rounded-full flex items-center justify-center transition-colors shadow-lg z-20"
-                  >
-                    <span className="text-sm text-primary-foreground font-bold">↻</span>
-                  </button>
-                </Card>
-                
-                {/* 背面 - 卡牌详细信息 */}
-                <Card className={cn(
-                  "flip-card-back relative group overflow-hidden",
-                  "bg-gradient-to-br from-card/95 via-primary/20 to-card/95 backdrop-blur-sm border-2 border-accent",
-                  "shadow-[0_8px_32px_rgba(168,85,247,0.4)]"
-                )}>
-                  <div className="flex flex-col items-center justify-center h-full p-4 relative">
-                    <div className="text-3xl md:text-4xl mb-2 font-bold text-accent">{card.id}</div>
-                    <div className="text-sm md:text-base text-center font-semibold text-foreground mb-3">
-                      {getCardName(card)}
-                    </div>
-                    <div className="text-xs text-center text-muted-foreground leading-relaxed">
-                      {card.keywords[language].slice(0, 4).join(' • ')}
-                    </div>
-                    <button
-                      onClick={(e) => toggleFlip(card.id, e)}
-                      className="absolute bottom-2 right-2 w-8 h-8 bg-primary/90 hover:bg-primary rounded-full flex items-center justify-center transition-colors shadow-lg z-20"
-                    >
-                      <span className="text-sm text-primary-foreground font-bold">↻</span>
-                    </button>
-                  </div>
                 </Card>
               </div>
             </div>
