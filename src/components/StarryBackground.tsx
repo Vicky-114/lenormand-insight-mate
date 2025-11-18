@@ -46,7 +46,7 @@ export const StarryBackground = () => {
 
     // Initialize stars
     const initStars = () => {
-      const numStars = 450;
+      const numStars = 500;
       starsRef.current = [];
       
       for (let i = 0; i < numStars; i++) {
@@ -98,10 +98,10 @@ export const StarryBackground = () => {
         const dx = mouseRef.current.x - star.x;
         const dy = mouseRef.current.y - star.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const attractionRadius = 250;
+        const attractionRadius = 300;
         
         if (distance < attractionRadius && distance > 0) {
-          const force = (1 - distance / attractionRadius) * 0.8;
+          const force = (1 - distance / attractionRadius) * 1.2;
           star.x += (dx / distance) * force;
           star.y += (dy / distance) * force;
         }
