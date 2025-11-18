@@ -96,17 +96,21 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
   const isSelected = (card: LenormandCard) => 
     selectedCards.some(c => c.id === card.id);
   
-  const toggleFlip = (cardId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setFlippedCards(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(cardId)) {
-        newSet.delete(cardId);
-      } else {
-        newSet.add(cardId);
+  const handleCardClick = (card: LenormandCard, e: React.MouseEvent) => {
+    const isFlipped = flippedCards.has(card.id);
+    const selected = isSelected(card);
+    
+    if (!isFlipped) {
+      // 如果是背面（数字面），点击翻转到正面
+      setFlippedCards(prev => new Set(prev).add(card.id));
+    } else {
+      // 如果是正面（卡面），点击选择/取消选择
+      if (selected) {
+        onCardSelect(card);
+      } else if (canSelect) {
+        onCardSelect(card);
       }
-      return newSet;
-    });
+    }
   };
   
   const canSelect = selectedCards.length < maxCards;
@@ -176,22 +180,33 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
             <div
               key={card.id}
               className={cn(
-                "flip-card aspect-[2/3]",
+                "flip-card aspect-[2/3] cursor-pointer",
                 isFlipped && "flipped"
               )}
-              onClick={() => {
-                if (selected) {
-                  onCardSelect(card);
-                } else if (canSelect) {
-                  onCardSelect(card);
-                }
-              }}
+              onClick={(e) => handleCardClick(card, e)}
             >
               <div className="flip-card-inner">
-                {/* 正面 - 卡牌图片 */}
+                {/* 背面 - 默认显示数字 */}
                 <Card className={cn(
-                  "flip-card-front cursor-pointer transition-all duration-300 group overflow-hidden",
-                  "bg-gradient-card border-border hover:border-primary hover:scale-110 hover:z-10",
+                  "flip-card-front transition-all duration-300 group overflow-hidden",
+                  "bg-gradient-to-br from-card/95 via-primary/10 to-card/95 border-2 border-accent/60",
+                  "hover:border-accent hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:scale-105"
+                )}>
+                  <div className="flex flex-col items-center justify-center h-full p-2">
+                    <div className="text-2xl mb-1 font-bold text-accent">{card.id}</div>
+                    <div className="text-xs text-center font-semibold text-foreground mb-1">
+                      {getCardName(card)}
+                    </div>
+                    <div className="text-[10px] text-center text-muted-foreground leading-tight">
+                      {card.keywords[language].slice(0, 3).join(' • ')}
+                    </div>
+                  </div>
+                </Card>
+                
+                {/* 正面 - 点击后显示卡牌图片 */}
+                <Card className={cn(
+                  "flip-card-back transition-all duration-300 group overflow-hidden",
+                  "bg-gradient-card border-border hover:border-primary hover:scale-105 hover:z-10",
                   "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
                   selected && "border-accent border-2 shadow-glow scale-105",
                   !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
@@ -218,35 +233,6 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                       <span className="text-xs text-accent-foreground font-bold">✓</span>
                     </div>
                   )}
-                  <button
-                    onClick={(e) => toggleFlip(card.id, e)}
-                    className="absolute bottom-1 right-1 w-6 h-6 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors z-20"
-                  >
-                    <span className="text-xs text-primary-foreground">↻</span>
-                  </button>
-                </Card>
-                
-                {/* 背面 - 卡牌信息 */}
-                <Card className={cn(
-                  "flip-card-back cursor-pointer transition-all duration-300 group overflow-hidden",
-                  "bg-gradient-to-br from-card/95 via-primary/10 to-card/95 border-2 border-accent/60",
-                  "hover:border-accent hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]"
-                )}>
-                  <div className="flex flex-col items-center justify-center h-full p-2 relative">
-                    <div className="text-2xl mb-1 font-bold text-accent">{card.id}</div>
-                    <div className="text-xs text-center font-semibold text-foreground mb-1">
-                      {getCardName(card)}
-                    </div>
-                    <div className="text-[10px] text-center text-muted-foreground leading-tight">
-                      {card.keywords[language].slice(0, 3).join(' • ')}
-                    </div>
-                    <button
-                      onClick={(e) => toggleFlip(card.id, e)}
-                      className="absolute bottom-1 right-1 w-6 h-6 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors z-20"
-                    >
-                      <span className="text-xs text-primary-foreground">↻</span>
-                    </button>
-                  </div>
                 </Card>
               </div>
             </div>
