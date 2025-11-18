@@ -214,7 +214,7 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                 {/* 背面 - 默认显示数字 */}
                 <Card className={cn(
                   "flip-card-front transition-all duration-300 group overflow-hidden relative",
-                  "bg-gradient-to-br from-primary/20 via-card/60 to-primary/20 border-2 border-accent/40 backdrop-blur-sm",
+                  "bg-gradient-to-br from-primary/20 via-card/30 to-primary/20 border-2 border-accent/40 backdrop-blur-sm",
                   "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105",
                   !canSelect && !selected && "opacity-50 cursor-not-allowed hover:scale-100"
                 )}>
@@ -240,7 +240,7 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                 {/* 正面 - 选中时显示卡牌图片 */}
                 <Card className={cn(
                   "flip-card-back transition-all duration-300 group overflow-hidden",
-                  "bg-card/60 backdrop-blur-sm border-2 border-accent shadow-glow"
+                  "bg-card/30 backdrop-blur-sm border-2 border-accent shadow-glow"
                 )}>
                   {cardImages[card.id] && (
                     <img 

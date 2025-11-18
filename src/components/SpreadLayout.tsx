@@ -107,7 +107,7 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
           <div key={card.id} className="flex flex-col items-center gap-3 animate-fade-in" style={{animationDelay: `${index * 0.15}s`}}>
             <Card className={cn(
               "w-32 h-48 md:w-40 md:h-60 relative group overflow-hidden",
-              "bg-gradient-to-br from-card/95 via-card/90 to-background/95 backdrop-blur-sm border-2 border-accent/80",
+              "bg-gradient-to-br from-card/40 via-card/30 to-background/40 backdrop-blur-sm border-2 border-accent/80",
               "shadow-[0_8px_32px_rgba(168,85,247,0.3)] hover:shadow-[0_12px_48px_rgba(168,85,247,0.5)]",
               "transition-all duration-500 hover:scale-110 hover:-translate-y-2"
             )}>
