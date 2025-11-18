@@ -28,6 +28,7 @@ export const StarryBackground = () => {
   const shootingStarsRef = useRef<ShootingStar[]>([]);
   const animationFrameRef = useRef<number>();
   const lastShootingStarRef = useRef<number>(0);
+  const mouseRef = useRef<{ x: number; y: number }>({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -93,7 +94,19 @@ export const StarryBackground = () => {
 
       // Update and draw twinkling stars
       starsRef.current.forEach((star) => {
-        // Update position
+        // Mouse attraction effect
+        const dx = mouseRef.current.x - star.x;
+        const dy = mouseRef.current.y - star.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const attractionRadius = 150;
+        
+        if (distance < attractionRadius && distance > 0) {
+          const force = (1 - distance / attractionRadius) * 0.3;
+          star.x += (dx / distance) * force;
+          star.y += (dy / distance) * force;
+        }
+
+        // Update position with natural drift
         star.x += star.vx;
         star.y += star.vy;
 
@@ -155,12 +168,30 @@ export const StarryBackground = () => {
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
+    // Mouse move handler
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    // Mouse leave handler
+    const handleMouseLeave = () => {
+      mouseRef.current = { x: -1000, y: -1000 };
+    };
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
     animate();
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -170,7 +201,7 @@ export const StarryBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none"
+      className="absolute inset-0 cursor-crosshair"
       style={{ zIndex: 0 }}
     />
   );
