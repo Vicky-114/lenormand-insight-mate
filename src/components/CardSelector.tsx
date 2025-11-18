@@ -2,6 +2,7 @@ import { LENORMAND_CARDS, LenormandCard } from '@/data/cards';
 import { Language, getTranslation } from '@/utils/languageDetector';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -143,13 +144,17 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
   
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <div className="flex justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            {getTranslation(language, 'selected')}: {selectedCards.length} / {maxCards}
-          </p>
-        </div>
-        
+      {/* 已选择的卡牌数量 */}
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-muted-foreground">
+          {getTranslation(language, 'selected')}: {selectedCards.length} / {maxCards}
+        </p>
+      </div>
+      
+      <Separator className="my-4" />
+      
+      {/* 数字输入框区域 */}
+      <div className="space-y-2">
         <Input
           type="text"
           value={numberInput}
@@ -159,6 +164,9 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
         />
       </div>
       
+      <Separator className="my-4" />
+      
+      {/* 卡牌选择网格 */}
       <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2">
         {LENORMAND_CARDS.map((card) => {
           const selected = isSelected(card);
@@ -204,18 +212,12 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                   "flip-card-back transition-all duration-300 group overflow-hidden",
                   "bg-gradient-card border-2 border-accent shadow-glow"
                 )}>
-                  {cardImages[card.id] ? (
+                  {cardImages[card.id] && (
                     <img 
                       src={cardImages[card.id]} 
                       alt={getCardName(card)}
                       className="w-full h-full object-cover rounded-lg"
                     />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-full p-2">
-                      <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground">
-                        {getCardName(card)}
-                      </div>
-                    </div>
                   )}
                   <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
                     <span className="text-xs text-accent-foreground font-bold">✓</span>
