@@ -246,7 +246,7 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                     <img 
                       src={cardImages[card.id]} 
                       alt={getCardName(card)}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover rounded-2xl"
                     />
                   )}
                   <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">

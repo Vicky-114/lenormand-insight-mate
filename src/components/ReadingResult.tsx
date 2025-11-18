@@ -60,7 +60,7 @@ ${getTranslation(language, 'disclaimer')}
       </div>
       
       {/* Overview */}
-      <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-card/40 via-primary/5 to-card/40 backdrop-blur-sm border-2 border-accent/50 shadow-[0_0_40px_rgba(168,85,247,0.3)] animate-fade-in">
+      <Card className="relative overflow-hidden p-6 bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl animate-fade-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl"></div>
         <h3 className="relative flex items-center gap-2 text-xl font-bold mb-3 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
           <Sparkles className="w-5 h-5 text-accent" />
@@ -72,7 +72,7 @@ ${getTranslation(language, 'disclaimer')}
       </Card>
       
       {/* Card Analysis */}
-      <Card className="p-6 bg-gradient-to-br from-card/35 via-card/30 to-background/35 backdrop-blur-sm border-border shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500 animate-fade-in" style={{animationDelay: '0.1s'}}>
+      <Card className="p-6 bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 animate-fade-in" style={{animationDelay: '0.1s'}}>
         <h3 className="flex items-center gap-2 text-xl font-bold mb-4 text-accent">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
           {getTranslation(language, 'cardAnalysis')}
