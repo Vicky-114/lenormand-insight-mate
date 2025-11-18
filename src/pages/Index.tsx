@@ -147,7 +147,7 @@ const Index = () => {
               </div>}
             
             {/* Captured Image Display */}
-            {capturedImage && <Card className="max-w-2xl mx-auto p-4 bg-gradient-card border-accent/50">
+            {capturedImage && <Card className="max-w-2xl mx-auto p-4 bg-card/60 backdrop-blur-sm border-accent/50">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <p className="text-sm font-medium">
