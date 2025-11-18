@@ -8,6 +8,8 @@ interface Star {
   amplitude: number;
   phase: number;
   speed: number;
+  vx: number;
+  vy: number;
 }
 
 interface ShootingStar {
@@ -47,6 +49,8 @@ export const StarryBackground = () => {
       starsRef.current = [];
       
       for (let i = 0; i < numStars; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.01 + Math.random() * 0.02;
         starsRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
@@ -55,6 +59,8 @@ export const StarryBackground = () => {
           amplitude: 0.2 + Math.random() * 0.3,
           phase: Math.random() * Math.PI * 2,
           speed: 0.001 + Math.random() * 0.002,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
         });
       }
     };
@@ -87,6 +93,16 @@ export const StarryBackground = () => {
 
       // Update and draw twinkling stars
       starsRef.current.forEach((star) => {
+        // Update position
+        star.x += star.vx;
+        star.y += star.vy;
+
+        // Wrap around edges
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
+
         const twinkle = Math.sin(t * star.speed + star.phase);
         const opacity = Math.min(1, Math.max(0.2, star.baseOpacity + star.amplitude * twinkle));
         const size = Math.max(0.5, star.baseSize * (0.9 + 0.1 * (1 + Math.cos(t * star.speed + star.phase))));
