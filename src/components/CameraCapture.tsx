@@ -308,7 +308,7 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
               {instructionText[language]}
             </p>
             
-            <div className="relative w-full max-w-3xl aspect-video bg-muted rounded-lg overflow-hidden">
+            <div className="relative w-full max-w-3xl aspect-video bg-muted/60 backdrop-blur-sm rounded-lg overflow-hidden">
               {capturedImage ? (
                 <img
                   src={capturedImage}
