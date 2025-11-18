@@ -24,7 +24,7 @@ export const ReadingRules = ({ language }: ReadingRulesProps) => {
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl">
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-white/2 backdrop-blur-xl border border-white/5 shadow-xl">
         <DialogHeader className="space-y-3 pb-6 border-b border-border/50">
           <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
             {getTranslation(language, 'reading_rules')}

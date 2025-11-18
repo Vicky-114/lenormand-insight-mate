@@ -87,7 +87,7 @@ export const SelectionHistory = ({ language, onRestore, onSave, currentSelection
   const clearText = language === 'zh-CN' ? '清空历史' : language === 'ko' ? '기록 지우기' : 'Clear';
 
   return (
-    <Card className="p-4 bg-card/30 backdrop-blur-sm border-accent/20">
+    <Card className="p-4 bg-card/15 backdrop-blur-md border border-accent/15">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <History className="w-4 h-4 text-accent" />

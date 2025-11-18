@@ -278,7 +278,7 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
   };
 
   return (
-    <Card className="fixed inset-4 z-50 bg-background/95 backdrop-blur-sm border-2 border-accent shadow-glow flex flex-col">
+    <Card className="fixed inset-4 z-50 bg-background/80 backdrop-blur-lg border border-accent shadow-glow flex flex-col">
       <div className="flex justify-between items-center p-4 border-b border-border">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Camera className="w-5 h-5 text-accent" />
@@ -308,7 +308,7 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
               {instructionText[language]}
             </p>
             
-            <div className="relative w-full max-w-3xl aspect-video bg-muted/30 backdrop-blur-sm rounded-lg overflow-hidden">
+            <div className="relative w-full max-w-3xl aspect-video bg-muted/20 backdrop-blur-md rounded-lg overflow-hidden">
               {capturedImage ? (
                 <img
                   src={capturedImage}
@@ -325,7 +325,7 @@ export const CameraCapture = ({ onCapture, onCardsIdentified, onClose, language 
                     className="w-full h-full object-cover"
                   />
                   {isAutoDetecting && (
-                    <div className="absolute top-4 left-4 right-4 bg-black/80 text-white p-4 rounded-lg backdrop-blur-sm">
+                    <div className="absolute top-4 left-4 right-4 bg-black/70 text-white p-4 rounded-lg backdrop-blur-md">
                       {detectedCards.length > 0 ? (
                         <>
                           <p className="text-sm font-semibold mb-2 text-green-400">

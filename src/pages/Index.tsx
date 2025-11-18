@@ -97,7 +97,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="space-y-8">
             {/* Header */}
-            <Card className="relative overflow-hidden bg-gradient-to-br from-card/95 via-card/90 to-background/95 backdrop-blur-xl border-2 border-primary/30 shadow-[0_0_60px_rgba(168,85,247,0.4)]">
+            <Card className="relative overflow-hidden bg-gradient-to-br from-card/60 via-card/50 to-background/60 backdrop-blur-lg border border-primary/20 shadow-[0_0_40px_rgba(168,85,247,0.3)]">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 animate-pulse"></div>
               <div className="relative p-6 md:p-8 text-center space-y-4">
                 <div className="flex items-center justify-center gap-3">
@@ -119,7 +119,7 @@ const Index = () => {
             </Card>
             
             {/* Question Input */}
-            <Card className="relative overflow-hidden max-w-2xl mx-auto bg-gradient-to-br from-card/90 via-card/85 to-background/90 backdrop-blur-xl border-2 border-border/50 shadow-card hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all duration-500">
+            <Card className="relative overflow-hidden max-w-2xl mx-auto bg-gradient-to-br from-card/50 via-card/40 to-background/50 backdrop-blur-lg border border-border/30 shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"></div>
               <div className="relative p-6 space-y-3">
                 <label className="flex items-center gap-2 text-sm font-medium text-foreground">
@@ -147,7 +147,7 @@ const Index = () => {
               </div>}
             
             {/* Captured Image Display */}
-            {capturedImage && <Card className="max-w-2xl mx-auto p-4 bg-card/30 backdrop-blur-sm border-accent/50">
+            {capturedImage && <Card className="max-w-2xl mx-auto p-4 bg-card/15 backdrop-blur-md border border-accent/30">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <p className="text-sm font-medium">
@@ -165,7 +165,7 @@ const Index = () => {
               </Card>}
             
             {/* Card Selection */}
-            <Card className="relative overflow-hidden max-w-6xl mx-auto bg-gradient-to-br from-card/90 via-card/85 to-background/90 backdrop-blur-xl border-2 border-border/50 shadow-card hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all duration-500">
+            <Card className="relative overflow-hidden max-w-6xl mx-auto bg-gradient-to-br from-card/50 via-card/40 to-background/50 backdrop-blur-lg border border-border/30 shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"></div>
               <div className="relative p-6">
                 <div className="flex justify-between items-center mb-6">
