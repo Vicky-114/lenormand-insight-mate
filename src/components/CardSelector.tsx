@@ -188,12 +188,26 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
               <div className="flip-card-inner">
                 {/* 背面 - 默认显示数字 */}
                 <Card className={cn(
-                  "flip-card-front transition-all duration-300 group overflow-hidden",
-                  "bg-gradient-to-br from-card/95 via-primary/10 to-card/95 border-2 border-accent/60",
-                  "hover:border-accent hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:scale-105"
+                  "flip-card-front transition-all duration-300 group overflow-hidden relative",
+                  "bg-gradient-to-br from-primary/20 via-card to-primary/20 border-2 border-accent/40",
+                  "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105"
                 )}>
-                  <div className="flex flex-col items-center justify-center h-full p-2">
-                    <div className="text-3xl font-bold text-accent">{card.id}</div>
+                  {/* 装饰性背景图案 */}
+                  <div className="absolute inset-0 opacity-20">
+                    <div className="absolute top-2 left-2 text-accent/30">✦</div>
+                    <div className="absolute top-2 right-2 text-accent/30">✦</div>
+                    <div className="absolute bottom-2 left-2 text-accent/30">✦</div>
+                    <div className="absolute bottom-2 right-2 text-accent/30">✦</div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl text-primary/10">◈</div>
+                  </div>
+                  
+                  {/* 发光效果 */}
+                  <div className="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="flex flex-col items-center justify-center h-full p-2 relative z-10">
+                    <div className="text-3xl font-bold text-accent drop-shadow-[0_0_8px_rgba(234,179,8,0.8)] group-hover:drop-shadow-[0_0_15px_rgba(234,179,8,1)] transition-all duration-300">
+                      {card.id}
+                    </div>
                   </div>
                 </Card>
                 

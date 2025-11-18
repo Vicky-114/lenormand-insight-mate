@@ -128,12 +128,28 @@ export const SpreadLayout = ({ selectedCards, language }: SpreadLayoutProps) => 
                 {/* 背面 - 默认显示数字 */}
                 <Card className={cn(
                   "flip-card-front relative group overflow-hidden",
-                  "bg-gradient-to-br from-card/95 via-primary/20 to-card/95 backdrop-blur-sm border-2 border-accent",
-                  "shadow-[0_8px_32px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_48px_rgba(168,85,247,0.5)]",
+                  "bg-gradient-to-br from-primary/30 via-card to-primary/30 backdrop-blur-sm border-2 border-accent/60",
+                  "shadow-[0_8px_32px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_48px_rgba(168,85,247,0.7)]",
                   "transition-all duration-500 hover:scale-110 hover:-translate-y-2"
                 )}>
-                  <div className="flex flex-col items-center justify-center h-full p-4">
-                    <div className="text-5xl md:text-6xl font-bold text-accent">{card.id}</div>
+                  {/* 装饰性背景图案 */}
+                  <div className="absolute inset-0 opacity-30">
+                    <div className="absolute top-3 left-3 text-xl md:text-2xl text-accent/40">✦</div>
+                    <div className="absolute top-3 right-3 text-xl md:text-2xl text-accent/40">✦</div>
+                    <div className="absolute bottom-3 left-3 text-xl md:text-2xl text-accent/40">✦</div>
+                    <div className="absolute bottom-3 right-3 text-xl md:text-2xl text-accent/40">✦</div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl text-primary/10">◈</div>
+                    <div className="absolute top-1/3 left-1/4 text-lg md:text-xl opacity-50">☾</div>
+                    <div className="absolute top-2/3 right-1/4 text-lg md:text-xl opacity-50">★</div>
+                  </div>
+                  
+                  {/* 发光效果 */}
+                  <div className="absolute inset-0 bg-gradient-radial from-accent/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="flex flex-col items-center justify-center h-full p-4 relative z-10">
+                    <div className="text-5xl md:text-6xl font-bold text-accent drop-shadow-[0_0_12px_rgba(234,179,8,0.9)] group-hover:drop-shadow-[0_0_20px_rgba(234,179,8,1)] transition-all duration-500">
+                      {card.id}
+                    </div>
                   </div>
                 </Card>
                 

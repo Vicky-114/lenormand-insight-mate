@@ -43,6 +43,7 @@ All colors MUST be HSL.
     
     --gradient-mystic: linear-gradient(135deg, hsl(270 60% 25%), hsl(250 70% 35%));
     --gradient-card: linear-gradient(180deg, hsl(270 35% 12%), hsl(270 30% 8%));
+    --gradient-radial: radial-gradient(circle, var(--accent), transparent);
     --shadow-glow: 0 0 40px hsl(var(--mystic-glow) / 0.3);
     --shadow-card: 0 8px 32px hsl(270 60% 10% / 0.5);
   }
