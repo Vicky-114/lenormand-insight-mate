@@ -83,11 +83,12 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
             <Card
               key={card.id}
               className={cn(
-                "relative aspect-[2/3] cursor-pointer transition-all duration-300",
-                "bg-gradient-card border-border hover:border-primary",
+                "relative aspect-[2/3] cursor-pointer transition-all duration-300 group",
+                "bg-gradient-card border-border hover:border-primary hover:scale-110 hover:z-10",
                 "flex flex-col items-center justify-center p-2",
-                selected && "border-accent border-2 shadow-glow",
-                !selected && !canSelect && "opacity-50 cursor-not-allowed"
+                "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
+                selected && "border-accent border-2 shadow-glow scale-105",
+                !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
               )}
               onClick={() => {
                 if (selected) {
@@ -98,13 +99,14 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                 }
               }}
             >
-              <div className="text-2xl mb-1">{card.id}</div>
-              <div className="text-xs text-center font-medium leading-tight">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+              <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
+              <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
                 {getCardName(card)}
               </div>
               {selected && (
-                <div className="absolute top-1 right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
-                  <span className="text-xs text-accent-foreground">✓</span>
+                <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                  <span className="text-xs text-accent-foreground font-bold">✓</span>
                 </div>
               )}
             </Card>

@@ -2,7 +2,7 @@ import { ReadingResult } from '@/utils/interpretationEngine';
 import { Language, getTranslation } from '@/utils/languageDetector';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Copy, Download, Share2 } from 'lucide-react';
+import { Copy, Download, Share2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ReadingResultProps {
@@ -60,38 +60,43 @@ ${getTranslation(language, 'disclaimer')}
       </div>
       
       {/* Overview */}
-      <Card className="p-6 bg-gradient-card border-accent/50">
-        <h3 className="text-xl font-bold mb-3 text-accent">
+      <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-card/95 via-primary/5 to-card/95 backdrop-blur-sm border-2 border-accent/50 shadow-[0_0_40px_rgba(168,85,247,0.3)] animate-fade-in">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl"></div>
+        <h3 className="relative flex items-center gap-2 text-xl font-bold mb-3 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+          <Sparkles className="w-5 h-5 text-accent" />
           {getTranslation(language, 'overview')}
         </h3>
-        <p className="text-foreground leading-relaxed">
+        <p className="relative text-foreground leading-relaxed">
           {result.ui_text.overview}
         </p>
       </Card>
       
       {/* Card Analysis */}
-      <Card className="p-6 bg-gradient-card border-border">
-        <h3 className="text-xl font-bold mb-4 text-accent">
+      <Card className="p-6 bg-gradient-to-br from-card/90 via-card/85 to-background/90 backdrop-blur-sm border-border shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500 animate-fade-in" style={{animationDelay: '0.1s'}}>
+        <h3 className="flex items-center gap-2 text-xl font-bold mb-4 text-accent">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
           {getTranslation(language, 'cardAnalysis')}
         </h3>
         <div className="space-y-4">
           {result.ui_text.card_analysis.map((analysis, index) => (
-            <div key={index} className="pl-4 border-l-2 border-accent/50">
-              <p className="text-foreground">{analysis}</p>
+            <div key={index} className="relative pl-4 border-l-2 border-accent/50 hover:border-accent transition-colors duration-300 group">
+              <div className="absolute left-0 top-0 w-2 h-2 bg-accent/50 group-hover:bg-accent rounded-full -translate-x-[5px] transition-colors duration-300"></div>
+              <p className="text-foreground leading-relaxed">{analysis}</p>
             </div>
           ))}
         </div>
       </Card>
       
       {/* Combinations */}
-      <Card className="p-6 bg-gradient-card border-border">
-        <h3 className="text-xl font-bold mb-4 text-accent">
+      <Card className="p-6 bg-gradient-to-br from-card/90 via-card/85 to-background/90 backdrop-blur-sm border-border shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500 animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <h3 className="flex items-center gap-2 text-xl font-bold mb-4 text-accent">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
           {getTranslation(language, 'combinations')}
         </h3>
         <ul className="space-y-2">
           {result.ui_text.combinations.map((insight, index) => (
-            <li key={index} className="flex items-start gap-2">
-              <span className="text-accent mt-1">✦</span>
+            <li key={index} className="flex items-start gap-2 group hover:translate-x-1 transition-transform duration-300">
+              <span className="text-accent mt-1 group-hover:scale-125 transition-transform duration-300">✦</span>
               <span className="text-foreground">{insight}</span>
             </li>
           ))}
@@ -99,8 +104,9 @@ ${getTranslation(language, 'disclaimer')}
       </Card>
       
       {/* Advice */}
-      <Card className="p-6 bg-gradient-card border-border">
-        <h3 className="text-xl font-bold mb-4 text-accent">
+      <Card className="p-6 bg-gradient-to-br from-card/90 via-card/85 to-background/90 backdrop-blur-sm border-border shadow-card hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-500 animate-fade-in" style={{animationDelay: '0.3s'}}>
+        <h3 className="flex items-center gap-2 text-xl font-bold mb-4 text-accent">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
           {getTranslation(language, 'advice')}
         </h3>
         <div className="space-y-4">
