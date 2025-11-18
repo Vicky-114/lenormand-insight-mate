@@ -5,6 +5,31 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
+// Import card images for cards 1-10
+import card1 from '@/assets/cards/1.png';
+import card2 from '@/assets/cards/2.png';
+import card3 from '@/assets/cards/3.png';
+import card4 from '@/assets/cards/4.png';
+import card5 from '@/assets/cards/5.png';
+import card6 from '@/assets/cards/6.png';
+import card7 from '@/assets/cards/7.png';
+import card8 from '@/assets/cards/8.png';
+import card9 from '@/assets/cards/9.png';
+import card10 from '@/assets/cards/10.png';
+
+const cardImages: Record<number, string> = {
+  1: card1,
+  2: card2,
+  3: card3,
+  4: card4,
+  5: card5,
+  6: card6,
+  7: card7,
+  8: card8,
+  9: card9,
+  10: card10,
+};
+
 interface CardSelectorProps {
   selectedCards: LenormandCard[];
   onCardSelect: (card: LenormandCard) => void;
@@ -83,29 +108,39 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
             <Card
               key={card.id}
               className={cn(
-                "relative aspect-[2/3] cursor-pointer transition-all duration-300 group",
+                "relative aspect-[2/3] cursor-pointer transition-all duration-300 group overflow-hidden",
                 "bg-gradient-card border-border hover:border-primary hover:scale-110 hover:z-10",
-                "flex flex-col items-center justify-center p-2",
                 "hover:shadow-[0_0_25px_rgba(168,85,247,0.4)]",
                 selected && "border-accent border-2 shadow-glow scale-105",
                 !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
               )}
               onClick={() => {
                 if (selected) {
-                  // Allow deselection
                   onCardSelect(card);
                 } else if (canSelect) {
                   onCardSelect(card);
                 }
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-              <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
-              <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                {getCardName(card)}
-              </div>
+              {cardImages[card.id] ? (
+                <img 
+                  src={cardImages[card.id]} 
+                  alt={getCardName(card)}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                  <div className="flex flex-col items-center justify-center h-full p-2">
+                    <div className="relative text-2xl mb-1 font-bold text-foreground group-hover:text-accent transition-colors duration-300">{card.id}</div>
+                    <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                      {getCardName(card)}
+                    </div>
+                  </div>
+                </>
+              )}
               {selected && (
-                <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
                   <span className="text-xs text-accent-foreground font-bold">✓</span>
                 </div>
               )}
