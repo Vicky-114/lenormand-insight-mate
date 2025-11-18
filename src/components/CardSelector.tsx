@@ -164,32 +164,22 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
           const selected = isSelected(card);
           
           return (
-            <Card
+            <div
               key={card.id}
               className={cn(
-                "aspect-[2/3] cursor-pointer transition-all duration-300 group overflow-hidden relative",
-                "bg-gradient-to-br from-primary/20 via-card to-primary/20 border-2 border-accent/40",
-                "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105",
-                selected && "border-accent border-2 shadow-glow scale-105",
-                !selected && !canSelect && "opacity-50 cursor-not-allowed hover:scale-100"
+                "flip-card aspect-[2/3] cursor-pointer",
+                selected && "flipped"
               )}
               onClick={() => handleCardClick(card)}
             >
-              {cardImages[card.id] ? (
-                <>
-                  <img 
-                    src={cardImages[card.id]} 
-                    alt={getCardName(card)}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  {selected && (
-                    <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
-                      <span className="text-xs text-accent-foreground font-bold">✓</span>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <>
+              <div className="flip-card-inner">
+                {/* 背面 - 默认显示数字 */}
+                <Card className={cn(
+                  "flip-card-front transition-all duration-300 group overflow-hidden relative",
+                  "bg-gradient-to-br from-primary/20 via-card to-primary/20 border-2 border-accent/40",
+                  "hover:border-accent hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-105",
+                  !canSelect && !selected && "opacity-50 cursor-not-allowed hover:scale-100"
+                )}>
                   {/* 装饰性背景图案 */}
                   <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-2 left-2 text-accent/30">✦</div>
@@ -207,15 +197,32 @@ export const CardSelector = ({ selectedCards, onCardSelect, maxCards, language }
                       {card.id}
                     </div>
                   </div>
-                  
-                  {selected && (
-                    <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
-                      <span className="text-xs text-accent-foreground font-bold">✓</span>
+                </Card>
+                
+                {/* 正面 - 选中时显示卡牌图片 */}
+                <Card className={cn(
+                  "flip-card-back transition-all duration-300 group overflow-hidden",
+                  "bg-gradient-card border-2 border-accent shadow-glow"
+                )}>
+                  {cardImages[card.id] ? (
+                    <img 
+                      src={cardImages[card.id]} 
+                      alt={getCardName(card)}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full p-2">
+                      <div className="relative text-xs text-center font-medium leading-tight text-muted-foreground">
+                        {getCardName(card)}
+                      </div>
                     </div>
                   )}
-                </>
-              )}
-            </Card>
+                  <div className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg animate-scale-in z-10">
+                    <span className="text-xs text-accent-foreground font-bold">✓</span>
+                  </div>
+                </Card>
+              </div>
+            </div>
           );
         })}
       </div>
