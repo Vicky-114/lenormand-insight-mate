@@ -11,19 +11,19 @@ All colors MUST be HSL.
     --background: 270 40% 8%;
     --foreground: 270 15% 95%;
 
-    --card: 270 35% 12%;
+    --card: 270 35% 16%;
     --card-foreground: 270 15% 95%;
 
-    --popover: 270 40% 10%;
+    --popover: 270 40% 14%;
     --popover-foreground: 270 15% 95%;
 
     --primary: 270 60% 45%;
     --primary-foreground: 270 15% 98%;
 
-    --secondary: 270 30% 20%;
+    --secondary: 270 30% 24%;
     --secondary-foreground: 270 15% 95%;
 
-    --muted: 270 30% 18%;
+    --muted: 270 30% 22%;
     --muted-foreground: 270 15% 60%;
 
     --accent: 45 85% 55%;
