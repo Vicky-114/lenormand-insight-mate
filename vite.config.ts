@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  base: "/lenormand-insight-mate/",   // ⭐ 加这一行
+  base: "/lenormand-insight-mate/",  
 
   server: {
     host: "::",
