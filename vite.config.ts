@@ -5,7 +5,10 @@ import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
   base: "/lenormand-insight-mate/",  
-
+  build: {
+    sourcemap: true,
+  },
+  
   server: {
     host: "::",
     port: 8080,
